@@ -34,7 +34,8 @@ export const useAuthForm = () => {
     if (pathname === "/auth") {
       await login({ email: values.email, password: values.password });
     } else {
-      await register({ email: values.email, password: values.password });
+      
+      await register({username: values.username, email: values.email, password: values.password });
     }
     navigate("/home");
     setSubmitting(false);
