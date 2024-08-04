@@ -10,9 +10,8 @@ const packageService = apiBaseService.injectEndpoints({
   endpoints: (builder) => ({
     getUploadedRepos: builder.mutation<UploadedPackage[], string>({
       query: (userName) => ({
-        url: "/uploaded_packages_list",
-        method: "POST",
-        body: { user_name: userName },
+        url: `/uploaded_packages_list/${userName}`,
+        method: "GET",
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
@@ -26,7 +25,8 @@ const packageService = apiBaseService.injectEndpoints({
           dispatch(setIsLoading(false));
         }
       },
-    }),
+    })
+    ,
     getAccessibleRepos: builder.query<GrantedPackage[], void>({
       query: () => ({
         url: "/accessible_package_list",
