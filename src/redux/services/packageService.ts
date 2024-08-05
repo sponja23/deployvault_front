@@ -70,10 +70,14 @@ const packageService = apiBaseService.injectEndpoints({
         try {
           dispatch(setIsLoading(true));
           const { data } = await queryFulfilled;
-          dispatch(setUploadedPackages(data));
+          const isEmpty = data.length === 0;
+          if (isEmpty) {
+            dispatch(setFirstFetch());
+          }
+          dispatch(setGrantedPackages(data));
         } catch (error) {
-          dispatch(setIsError(true));
           throw error;
+          dispatch(setIsError(true));
         } finally {
           dispatch(setIsLoading(false));
         }
