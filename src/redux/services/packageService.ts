@@ -62,10 +62,10 @@ const packageService = apiBaseService.injectEndpoints({
       },
     }),
     getSharedPackagesList: builder.mutation<GrantedPackage[], string>({
-      query: (user_name) => {
-        console.log(`Querying shared packages for user: ${user_name}`);
+      query: (userName) => {
+        console.log(`Querying shared packages for user: ${userName}`);
         return {
-          url: `/shared_packages_list/${user_name}`,
+          url: `/shared_packages_list/${userName}`,
           method: "GET",
         };
       },
