@@ -63,9 +63,8 @@ const packageService = apiBaseService.injectEndpoints({
     }),
     getSharedPackagesList: builder.mutation<GrantedPackage[], string>({
       query: (user_name) => ({
-        url: "/shared_packages_list/",
-        method: "POST",
-        body: { user_name },
+        url: `/shared_packages_list/${user_name}`,
+        method: "GET",
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
