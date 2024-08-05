@@ -62,24 +62,38 @@ const packageService = apiBaseService.injectEndpoints({
       },
     }),
     getSharedPackagesList: builder.mutation<GrantedPackage[], string>({
-      query: (user_name) => ({
-        url: `/shared_packages_list/${user_name}`,
-        method: "GET",
-      }),
+      query: (user_name) => {
+        console.log(`Querying shared packages for user: ${user_name}`);
+        return {
+          url: `/shared_packages_list/${user_name}`,
+          method: "GET",
+        };
+      },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        console.log("Query started");
         try {
           dispatch(setIsLoading(true));
+          console.log("Loading state set to true");
+          
           const { data } = await queryFulfilled;
+          console.log("Query fulfilled, data received:", data);
+          
           const isEmpty = data.length === 0;
+          console.log(`Data is ${isEmpty ? 'empty' : 'not empty'}`);
+    
           if (isEmpty) {
             dispatch(setFirstFetch());
+            console.log("First fetch state set");
           }
+    
           dispatch(setGrantedPackages(data));
+          console.log("Granted packages updated");
         } catch (error) {
-          throw error;
+          console.error("Error occurred during query:", error);
           dispatch(setIsError(true));
         } finally {
           dispatch(setIsLoading(false));
+          console.log("Loading state set to false");
         }
       },
     }),
