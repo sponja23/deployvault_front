@@ -38,6 +38,8 @@ const authService = apiBaseService.injectEndpoints({
           dispatch(setIsLoading(true));
           const { data } = await queryFulfilled;
           dispatch(setUser({ email: query.email }));
+          console.log("login query");
+          console.log(query);          
           dispatch(setAuth(data.access_token));
           console.log("login data");
           console.log(data);
