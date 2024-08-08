@@ -32,6 +32,7 @@ const authSlice = createSlice({
       console.log(action);
 
       state.access_token = access_token;
+      state.username = username;      
       state.isAuthenticated = true;
 
       Cookies.set("authToken", access_token, { expires: 1 });
