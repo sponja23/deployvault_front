@@ -25,7 +25,7 @@ const PackageRetrieval: React.FC = () => {
 
   useEffect(() => {
     if (firstFetch && !isError) {
-      getSharedPackages(currentUser!.email ?? "");
+      getSharedPackages(currentUser!.username ?? "");
     }
   }, [firstFetch]);
 

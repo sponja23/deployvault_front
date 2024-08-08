@@ -73,7 +73,7 @@ const usePackageDistribution = () => {
       addAccessPackage(body)
         .then((res: any) => {
           if (res?.data.message == "Access granted successfully") {
-            getPackages(currentUser.email?.split("@")[0] ?? "");
+            getPackages(currentUser!.username ?? "");
             setShowShare(false);
             setEmail("");
           }
@@ -88,7 +88,7 @@ const usePackageDistribution = () => {
 
   useEffect(() => {
     if (uploadedPackages.length === 0 && !isError) {
-      getPackages(currentUser.email?.split("@")[0] ?? "");
+      getPackages(currentUser!.username ?? "");
     }
   }, [getPackages]);
 
