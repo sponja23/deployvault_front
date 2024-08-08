@@ -16,7 +16,7 @@ export const Profilebar = ({ email }: { email: string }) => {
     // await logout();
 
     dispatch(clearAuth());
-    dispatch(setUser({ email: "" }));
+    dispatch(setUser({ email: "", username: "" }));
     navigate("/");
   };
 
