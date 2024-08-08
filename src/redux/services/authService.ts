@@ -4,6 +4,7 @@ import { setUser } from "../slices/userSlice";
 import { apiBaseService } from "./apiBaseService";
 
 interface LoginRequest {
+  username: string;  
   email: string;
   password: string;
 }
