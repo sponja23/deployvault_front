@@ -38,7 +38,7 @@ const authService = apiBaseService.injectEndpoints({
         try {
           dispatch(setIsLoading(true));
           const { data } = await queryFulfilled;
-          dispatch(setUser({ email: query.email }));
+          dispatch(setUser({ email: query.email,username: data.username }));
           console.log("login query");
           console.log(query);          
           dispatch(setAuth({ access_token: data.access_token, username: data.username }));
@@ -75,7 +75,7 @@ const authService = apiBaseService.injectEndpoints({
           //TODO 2024-07-29 Mariano: Implement refresh token logic
           // await queryFulfilled;
           dispatch(clearAuth());
-          dispatch(setUser({ email: "" }));
+          dispatch(setUser({ email: "", username: ""}));
         } catch (error) {
           throw error;
         } finally {

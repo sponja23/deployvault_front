@@ -41,9 +41,10 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<{ email: string }>) {
-      const { email } = action.payload;
-      state.email = email;
+    setUser(state, action: PayloadAction<{ email: string, username: string}>) {
+      const { email, username } = action.payload;
+      console.log("setAuth payload");
+      console.log(action);
     },
     clearUser(state) {
       state.email = null;

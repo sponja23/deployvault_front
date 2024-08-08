@@ -25,10 +25,12 @@ const userSlice = createSlice({
      * @param state - The current state.
      * @param action - The action containing the payload with the username and email.
      */
-    setUser(state, action: PayloadAction<{ email: string }>) {
-      const { email } = action.payload;
+    setUser(state, action: PayloadAction<{ email: string, username:string}>) {
+      const { email,username } = action.payload;
       state.email = email;
+      state.username = username;      
       Cookies.set("email", email, { expires: 1 });
+      Cookies.set("username", username, { expires: 1 });      
     },
     /**
      * Action to clear the user's username and email.
