@@ -4,11 +4,13 @@ import Cookies from "js-cookie";
 
 export interface UserState {
   email: string | null;
+  username: string | null;   
 }
 
 const initialState: UserState = {
   // email: Cookies.get("email") || "marianoo.14.md@mail.com",
   email: Cookies.get("email") || null,
+  username: Cookies.get("username") || null,  
 };
 
 /**

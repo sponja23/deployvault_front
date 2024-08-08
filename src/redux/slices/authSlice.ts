@@ -4,11 +4,13 @@ import Cookies from "js-cookie";
 
 export interface AuthState {
   access_token: string | null;
+  username: string | null;  
   isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
   access_token: Cookies.get("authToken") || null,
+  username: Cookies.get("username") || null,
   isAuthenticated: false,
 };
 
