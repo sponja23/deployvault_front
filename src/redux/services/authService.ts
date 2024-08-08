@@ -4,7 +4,6 @@ import { setUser } from "../slices/userSlice";
 import { apiBaseService } from "./apiBaseService";
 
 interface LoginRequest {
-  username: string;  
   email: string;
   password: string;
 }
@@ -16,6 +15,7 @@ interface SignupRequest {
 }
 
 interface AuthResponse {
+  username: string;
   access_token: string;
   token_type: string;
 }
@@ -41,7 +41,7 @@ const authService = apiBaseService.injectEndpoints({
           dispatch(setUser({ email: query.email }));
           console.log("login query");
           console.log(query);          
-          dispatch(setAuth(data.access_token));
+          dispatch(setAuth({ access_token: data.access_token, username: data.username }));
           console.log("login data");
           console.log(data);
         } catch (error) {

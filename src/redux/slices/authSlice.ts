@@ -24,9 +24,9 @@ const authSlice = createSlice({
      * @param state - The current state of the authentication slice.
      * @param action - The payload action containing the authentication token.
      */
-    setAuth: (state, action: PayloadAction<string>) => {
-      const access_token = action.payload;
-      console.log("setauth payload");
+    setAuth: (state, action: PayloadAction<{access_token: string, username: string}>) => {
+      const { access_token, username } = action.payload;
+      console.log("setAuth payload");
       console.log(action);
 
       state.access_token = access_token;
