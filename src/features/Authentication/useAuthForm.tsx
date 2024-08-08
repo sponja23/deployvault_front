@@ -32,7 +32,7 @@ export const useAuthForm = () => {
    */
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     if (pathname === "/auth") {
-      await login({ email: values.email, password: values.password });
+      await login({ username: values.username, email: values.email, password: values.password });
     } else {
       
       await register({username: values.username, email: values.email, password: values.password });
