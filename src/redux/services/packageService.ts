@@ -82,7 +82,7 @@ const packageService = apiBaseService.injectEndpoints({
           console.log(`Data is ${isEmpty ? 'empty' : 'not empty'}`);
     
           if (isEmpty) {
-            dispatch(setFirstFetch());
+            // dispatch(setFirstFetch());
             console.log("First fetch state set");
           }
     
