@@ -1,5 +1,5 @@
 import React from "react";
-import CaOSLogo from "../../assets/CaOS_transparent.png";
+import deployVault_logo from "../../assets/logo_deployvault_inverted.png";
 import { Link } from "react-router-dom";
 import { Divider } from "primereact/divider";
 import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
@@ -15,14 +15,14 @@ export const AuthForm = () => {
   return (
     <Container className="d-flex flex-column justify-content-center align-items-center px-4">
       <Link to="/">
-        <Image src={CaOSLogo} alt="CaOS Logo" className="mb-4" style={{ maxWidth: "500px" }} />
+        <Image src={deployVault_logo} alt="CaOS Logo" className="mb-4" style={{ maxWidth: "500px" }} />
       </Link>
       <Card className="p-4" style={{ width: "400px", minHeight: "400px", overflow: "hidden" }}>
         {isLoading ? (
           <CaosSpinner />
         ) : (
           <Card.Body>
-            <h1 className="text-center mb-4">{pathname === "/auth" ? "Sign in to CaOS" : "Register"}</h1>
+            <h1 className="text-center mb-4">{pathname === "/auth" ? "Sign in" : "Register"}</h1>
             <FormikProvider value={formik}>
               <Form className="w-100" onSubmit={formik.handleSubmit}>
                 {pathname === "/register" && (
