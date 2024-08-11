@@ -13,17 +13,17 @@ export const CaOSButton: React.FC<CaOSButtonProps> = ({ label, size = "small", t
   const baseColors = {
     primary: {
       color: "#FFFFFF",
-      backgroundColor: "#dd5333",
-      borderColor: "#dd5333",
-      hoverBackgroundColor: "#e77b5a",
-      hoverColor: "#FFFFFF",
+      backgroundColor: "#0F0F44",
+      borderColor: "#AAAAAA",
+      hoverBackgroundColor: "#FFFFFF",
+      hoverColor: "#9047C9",
     },
     secondary: {
       color: "#000000",
       backgroundColor: "#f8f9fa",
       borderColor: "#f8f9fa",
-      hoverBackgroundColor: "#047698",
-      hoverColor: "#FFFFFF",
+      hoverBackgroundColor: "#000000",
+      hoverColor: "#9047C9",
     },
   };
 

@@ -4,7 +4,7 @@ import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { Col, Container, Image, Row } from "react-bootstrap";
-import caosLogo from "../../assets/CaOS_transparent.png";
+import caosLogo from "../../assets/logo_deployvault_inverted.png";
 import { selectCurrentUser } from "../../redux/slices/userSlice";
 
 export const Landing: React.FC = () => {
@@ -14,8 +14,8 @@ export const Landing: React.FC = () => {
   return (
     <Container fluid className="d-flex justify-content-center align-items-center  px-4">
       <Row className="w-100">
-        <Col lg={6} md={8} sm={12} className="text-center mb-4">
-          <Image src={caosLogo} alt="CaOS Logo" className="img-fluid mb-4" />
+        <Col lg={6} md={8} sm={12} className="text-center d-flex mb-4 mt-4">
+          <Image src={caosLogo} alt="CaOS Logo" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
         </Col>
         <Col lg={6} md={8} sm={12} className="d-flex justify-content-center">
           <Card title="Welcome to CaOS" className="p-4 shadow border-round" style={{ width: "100%", maxWidth: "600px" }}>

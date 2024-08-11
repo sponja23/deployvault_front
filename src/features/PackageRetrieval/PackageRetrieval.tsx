@@ -20,7 +20,7 @@ const PackageRetrieval: React.FC = () => {
   const handleCopy = (repo: string) => {
     navigator.clipboard.writeText(`pip install ${repo}`);
     setCopied(repo);
-    setTimeout(() => setCopied(null), 2000); // Reset after 2 seconds
+    setTimeout(() => setCopied(null), 3000); // Reset after 2 seconds
   };
 
   useEffect(() => {
@@ -35,15 +35,6 @@ const PackageRetrieval: React.FC = () => {
     };
   }, [dispatch]);
 
-  <ListGroup.Item>
-    Repo 1
-    <OverlayTrigger placement="right" overlay={<Tooltip>{copied === "Repo 1" ? "Copied!" : "Copy"}</Tooltip>}>
-      <Button onClick={() => handleCopy("Repo 1")} variant="secondary" className="ml-2">
-        {copied === "Repo 1" ? "Copied!" : "Copy"}
-      </Button>
-    </OverlayTrigger>
-  </ListGroup.Item>;
-
   return (
     <div>
       <h2>Package Retrieval</h2>
@@ -51,17 +42,21 @@ const PackageRetrieval: React.FC = () => {
         {isLoading ? (
           <ListGroup.Item>Loading...</ListGroup.Item>
         ) : sharedPackages.length > 0 ? (
-          sharedPackages.map((repo) => (
-            <ListGroup.Item key={repo.name}>
-              {repo.name}
-
-              <OverlayTrigger placement="right" overlay={<Tooltip>{copied === "Repo 1" ? "Copied!" : "Copy"}</Tooltip>}>
-                <Button onClick={() => handleCopy(repo.name)} variant="secondary" className="ml-2">
-                  {copied === repo.name ? "Copied!" : "Copy"}
-                </Button>
-              </OverlayTrigger>
-            </ListGroup.Item>
-          ))
+          sharedPackages.map((repo) => {
+            console.log(repo);
+            return (
+              <ListGroup.Item key={repo.package_name}>
+                <ListGroup.Item>
+                  {repo.package_name}
+                  <OverlayTrigger placement="right" overlay={<Tooltip>{copied === repo.package_name ? "Copied!" : "Copy"}</Tooltip>}>
+                    <Button onClick={() => handleCopy(repo.package_name)} variant="secondary" className="ml-2">
+                      {copied === repo.package_name ? "Copied!" : "Copy"}
+                    </Button>
+                  </OverlayTrigger>
+                </ListGroup.Item>
+              </ListGroup.Item>
+            );
+          })
         ) : (
           <ListGroup.Item>No shared packages found.</ListGroup.Item>
         )}

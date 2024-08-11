@@ -1,3 +1,4 @@
+import { em } from "@fullcalendar/core/internal-common";
 import { useAppSelector } from "../hooks";
 import { GrantedPackage, UploadedPackage, clearFirstFetch, setFirstFetch, setGrantedPackages, setUploadedPackages } from "../slices/packageSlice";
 import { setIsError, setIsLoading } from "../slices/uiSlice";
@@ -25,8 +26,7 @@ const packageService = apiBaseService.injectEndpoints({
           dispatch(setIsLoading(false));
         }
       },
-    })
-    ,
+    }),
     getAccessibleRepos: builder.query<GrantedPackage[], void>({
       query: () => ({
         url: "/accessible_package_list",
@@ -74,18 +74,10 @@ const packageService = apiBaseService.injectEndpoints({
         try {
           dispatch(setIsLoading(true));
           console.log("Loading state set to true");
-          
+
           const { data } = await queryFulfilled;
           console.log("Query fulfilled, data received:", data);
-          
-          const isEmpty = data.length === 0;
-          console.log(`Data is ${isEmpty ? 'empty' : 'not empty'}`);
-          dispatch(setFirstFetch());
-          if (isEmpty) {
-            dispatch(setFirstFetch());
-            console.log("First fetch state set");
-          }
-    
+
           dispatch(setGrantedPackages(data));
           console.log("Granted packages updated");
         } catch (error) {
@@ -93,6 +85,7 @@ const packageService = apiBaseService.injectEndpoints({
           dispatch(setIsError(true));
         } finally {
           dispatch(setIsLoading(false));
+          clearFirstFetch();
           console.log("Loading state set to false");
         }
       },

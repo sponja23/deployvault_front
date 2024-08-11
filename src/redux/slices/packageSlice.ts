@@ -13,10 +13,13 @@ export interface UploadedPackage {
 }
 
 export interface GrantedPackage {
-  name: string;
+  created_at: string;
+  description: string;
+  package_id: string;
+  package_name: string;
+  public: boolean;
   size: string;
   version: string;
-  share_with: string[];
 }
 
 export interface PackageState {
@@ -93,14 +96,14 @@ const packagesSlice = createSlice({
      * @param state - The current state.
      */
     setFirstFetch(state) {
-      state.firstFetch = false;
+      state.firstFetch = true;
     },
     /**
      * Clears the first fetch.
      * @param state - The current state.
      */
     clearFirstFetch(state) {
-      state.firstFetch = true;
+      state.firstFetch = false;
     },
   },
 });
