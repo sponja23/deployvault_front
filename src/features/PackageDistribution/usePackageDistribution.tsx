@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAddAccessPackageConfigMutation, useGetUploadedReposMutation } from "../../redux/services/packageService";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { UploadedPackage, addSelectedPackage, removeSelectedPackage, selectCurrentSelectedPackage, selectCurrentUploadedPackages } from "../../redux/slices/packageSlice";
+import { UploadedPackage, addSelectedPackage, clearUploadedPackages, removeSelectedPackage, selectCurrentSelectedPackage, selectCurrentUploadedPackages } from "../../redux/slices/packageSlice";
 import { selectCurrentUser } from "../../redux/slices/userSlice";
 import { DataTable, DataTableExpandedRows, DataTableValueArray } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -95,6 +95,7 @@ const usePackageDistribution = () => {
   useEffect(() => {
     return () => {
       dispatch(setIsError(false));
+      // dispatch(clearUploadedPackages());
     };
   }, [dispatch]);
 

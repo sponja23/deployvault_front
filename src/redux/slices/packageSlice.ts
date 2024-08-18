@@ -26,14 +26,12 @@ export interface PackageState {
   uploadPackages: UploadedPackage[];
   grantedPackages: GrantedPackage[];
   selectedPackage: UploadedPackage | null;
-  firstFetch: boolean;
 }
 
 const initialState: PackageState = {
   uploadPackages: [],
   grantedPackages: [],
   selectedPackage: null,
-  firstFetch: true,
 };
 
 /**
@@ -92,28 +90,45 @@ const packagesSlice = createSlice({
       state.selectedPackage = null;
     },
     /**
-     * Sets the first fetch to false.
+     * Clears the granted packages from the state.
      * @param state - The current state.
      */
-    setFirstFetch(state) {
-      state.firstFetch = true;
+    clearGrantedPackages(state) {
+      state.grantedPackages = [];
     },
     /**
-     * Clears the first fetch.
+     * Removes a granted package from the state.
+     * @param state - The current state.
+     * @param action - The payload action containing the granted package to remove.
+     */
+    removeGrantedPackage(state, action: PayloadAction<GrantedPackage>) {
+      state.grantedPackages = state.grantedPackages.filter((pkg) => pkg !== action.payload);
+    },
+    /**
+     * Clears the uploaded packages from the state.
      * @param state - The current state.
      */
-    clearFirstFetch(state) {
-      state.firstFetch = false;
+    clearUploadedPackages(state) {
+      state.uploadPackages = [];
     },
   },
 });
 
-export const { setUploadedPackages, setGrantedPackages, addUploadedPackage, removeUploadedPackage, addSelectedPackage, removeSelectedPackage, setFirstFetch, clearFirstFetch } = packagesSlice.actions;
+export const {
+  setUploadedPackages,
+  setGrantedPackages,
+  addUploadedPackage,
+  removeUploadedPackage,
+  addSelectedPackage,
+  removeSelectedPackage,
+  clearGrantedPackages,
+  removeGrantedPackage,
+  clearUploadedPackages,
+} = packagesSlice.actions;
 
 export const selectCurrentUploadedPackages = (state: RootState) => state.global.packages.uploadPackages;
 export const selectCurrentUploadedPackageByName = (package_name: string) => (state: RootState) =>
   state.global.packages.uploadPackages.find((pkg: UploadedPackage) => pkg.package_name === package_name);
 export const selectCurrentSelectedPackage = (state: RootState) => state.global.packages.selectedPackage;
 export const selectGrantedPackages = (state: RootState) => state.global.packages.grantedPackages;
-export const selectFirstFetch = (state: RootState) => state.global.packages.firstFetch;
 export default packagesSlice.reducer;

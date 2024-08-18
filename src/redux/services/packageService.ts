@@ -1,6 +1,6 @@
 import { em } from "@fullcalendar/core/internal-common";
 import { useAppSelector } from "../hooks";
-import { GrantedPackage, UploadedPackage, clearFirstFetch, setFirstFetch, setGrantedPackages, setUploadedPackages } from "../slices/packageSlice";
+import { GrantedPackage, UploadedPackage, setGrantedPackages, setUploadedPackages } from "../slices/packageSlice";
 import { setIsError, setIsLoading } from "../slices/uiSlice";
 import { apiBaseService } from "./apiBaseService";
 
@@ -74,10 +74,7 @@ const packageService = apiBaseService.injectEndpoints({
         try {
           dispatch(setIsLoading(true));
           console.log("Loading state set to true");
-
           const { data } = await queryFulfilled;
-          console.log("Query fulfilled, data received:", data);
-
           dispatch(setGrantedPackages(data));
           console.log("Granted packages updated");
         } catch (error) {
@@ -85,7 +82,7 @@ const packageService = apiBaseService.injectEndpoints({
           dispatch(setIsError(true));
         } finally {
           dispatch(setIsLoading(false));
-          clearFirstFetch();
+
           console.log("Loading state set to false");
         }
       },
@@ -94,3 +91,4 @@ const packageService = apiBaseService.injectEndpoints({
 });
 export const { useGetUploadedReposMutation, useGetAccessibleReposQuery, useAddAccessPackageConfigMutation, useGetSharedPackagesListMutation } = packageService;
 export default packageService;
+// example_8 example_8@example.com user_password_8

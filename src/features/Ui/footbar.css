@@ -1,0 +1,31 @@
+.layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 10vh;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+}
+
+.footer {
+    background-color: #9047C9; /* Purple color */
+    color: white;
+    width: 100%;
+    padding: 1rem 0;
+    margin: 0; /* Remove any margin */
+    position: relative;
+    bottom: 0;
+    left: 0; /* Ensure it spans the entire width */
+    right: 0; /* Ensure it spans the entire width */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
