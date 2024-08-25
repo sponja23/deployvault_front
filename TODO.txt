@@ -1,0 +1,11 @@
+--> Format package listing, dont show user ID but show username
+
+--> Format logged username top-right, not just a horrible black text
+
+--> Move footer to be always at the bottom of the screen? Package list minimum height??
+
+--> Make home bar appear and dissappear, add uiSlice (?) to make that setting and enable and disable 
+
+--> Footer - style as Gui is proposing
+
+--> CaOS content 
