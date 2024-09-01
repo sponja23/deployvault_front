@@ -27,7 +27,7 @@ const PackageRetrieval: React.FC = () => {
         <Column field="package_name" header="Name" sortable></Column>
         <Column field="size" header="Size" sortable></Column>
         <Column field="version" header="Version"></Column>
-        <Column field="public" header="Accessibility" body={(row: GrantedPackage) => (row.version ? "Public" : "Private")} sortable></Column>
+        <Column field="public" header="Accessibility" body={(row: GrantedPackage) => (row.public ? "Public" : "Private")} sortable></Column>
         <Column field="created_at" header="Upload Date" body={(row: GrantedPackage) => formatDate(row.created_at)} sortable></Column>
         <Column field="description" header="Description"></Column>
         <Column

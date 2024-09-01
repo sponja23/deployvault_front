@@ -9,7 +9,7 @@ export interface UploadedPackage {
   size: number;
   public: boolean;
   created_at: string;
-  shared_users?: { user_id: string }[];
+  shared_users?: { user_id: string; username: string  }[];
 }
 
 export interface GrantedPackage {

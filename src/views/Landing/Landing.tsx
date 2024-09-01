@@ -31,7 +31,7 @@ export const Landing: React.FC = () => {
                 <CaOSButton 
                   label={email ? "Dashboard" : "Join Us"} 
                   className="caos-button p-button-primary" 
-                  onClick={() => navigate(email ? "/dashboard" : "/auth")} 
+                  onClick={() => navigate(email ? "/home" : "/auth")} 
                 />
               </div>
             </Col>

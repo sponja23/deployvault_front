@@ -39,13 +39,12 @@ const usePackageDistribution = () => {
     return (
       <div className="p-3">
         <DataTable value={data.shared_users}>
-          <Column field="user_id" header="user_id" sortable></Column>
+          <Column field="username" header="User Name" sortable></Column>
           <Column
-            body={(row: UploadedPackage) => (
+            body={(user: { user_id: string; username: string }) => (
               <CaOSButton
                 label={`Remove permissions`}
-                //TODO(Mariano): Create and implements function to remove permissions
-                //  onClick={() => handleShowShare(row)}
+                onClick={() => handleRemoveAccess(data.package_name, user.username)}  // Accessing the username property
               />
             )}
           ></Column>
@@ -53,6 +52,29 @@ const usePackageDistribution = () => {
       </div>
     );
   };
+
+  const handleRemoveAccess = (package_name: string, nameToShare: string) => {
+    console.log(`Removing access for user: ${nameToShare}`);
+    try {
+      dispatch(removeSelectedPackage());
+      const body = { package_name: package_name, user_name: nameToShare, grant_access: false };
+      addAccessPackage(body)
+        .then((res: any) => {
+        console.log(res);
+        // getPackages(currentUser!.username ?? "");
+          if (res?.data.message == "Access revoked successfully.") {
+            getPackages(currentUser!.username ?? "");
+          }
+        })
+        .catch((err) => {
+          console.log(`Error: ${err}`);
+        });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  };
+  
+
 
   const allowExpansion = (rowData: UploadedPackage) => {
     const rowDataFiltered = rowData?.shared_users?.filter((user) => user?.user_id);
@@ -66,10 +88,11 @@ const usePackageDistribution = () => {
     setShowShare(true);
   };
 
-  const handleShare = (email: string) => {
+  const handleShare = (nameToShare: string) => {
+    console.log(`Sharing with user: ${nameToShare}`);
     try {
       dispatch(removeSelectedPackage());
-      const body = { package_name: selectedRepo!.package_name, user_name: email, grant_access: true };
+      const body = { package_name: selectedRepo!.package_name, user_name: nameToShare, grant_access: true };
       addAccessPackage(body)
         .then((res: any) => {
           if (res?.data.message == "Access granted successfully") {
@@ -105,6 +128,7 @@ const usePackageDistribution = () => {
     handleCloseShare,
     handleShare,
     handleShowShare,
+    handleRemoveAccess,
     email,
     setEmail,
     selectedRepo,

@@ -38,13 +38,13 @@ const PackageDistribution: React.FC = () => {
         <Column field="package_name" header="Name" sortable></Column>
         <Column field="size" header="Size" sortable></Column>
         <Column field="version" header="Version"></Column>
-        <Column field="public" header="Accessibility" body={(row: UploadedPackage) => (row.version ? "Public" : "Private")} sortable></Column>
+        <Column field="public" header="Accessibility" body={(row: UploadedPackage) => (row.public ? "Private" : "Private")} sortable></Column>
         <Column field="created_at" header="Upload Date" body={(row: UploadedPackage) => formatDate(row.created_at)} sortable></Column>
         <Column field="description" header="Description"></Column>
         <Column body={(row: UploadedPackage) => <CaOSButton label="Share" onClick={() => handleShowShare(row)} />}></Column>
       </DataTable>
 
-      <ShareRepoModal show={showShare} onHide={handleCloseShare} onShare={handleShare} email={email} setEmail={setEmail} selectedRepo={selectedRepo} />
+      <ShareRepoModal show={showShare} onHide={handleCloseShare} onShare={handleShare} nameToShare={email} setTargetName={setEmail} selectedRepo={selectedRepo} />
     </div>
   );
 

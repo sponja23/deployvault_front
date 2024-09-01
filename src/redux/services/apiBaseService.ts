@@ -6,7 +6,8 @@ import { clearUser } from "../slices/userSlice";
  * The base query for making API requests.
  */
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://deployvault0-2a449bf8dc4e.herokuapp.com",
+  //baseUrl: "https://deployvault0-2a449bf8dc4e.herokuapp.com",
+  baseUrl: "http://localhost:8000",
   // credentials: "same-origin",
   prepareHeaders: (headers, { getState }) => {
     // Optional: Get token from state and set it in headers

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { NavBar } from "../features/Ui/Navbar";
 import { Footer } from "../features/Ui/bottombar";
 import { Container } from "react-bootstrap";
@@ -13,6 +13,10 @@ export const Layout = () => {
   const [navHeight, setNavHeight] = useState(0);
   const { email } = useAppSelector((state: RootState) => state.global.user);
   const loading = useAppSelector(selectIsLoading);
+  const location = useLocation();
+
+  // Determine whether to show the Menu
+  const showMenu = email && location.pathname !== "/";
 
   return (
     <div className="layout-wrapper">
@@ -24,7 +28,7 @@ export const Layout = () => {
           </Container>
         ) : (
           <Container className="h-100 d-flex flex-column">
-            {email && <Menu />}
+            {showMenu && <Menu />}
             <Outlet />
           </Container>
         )}

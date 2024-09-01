@@ -45,6 +45,7 @@ const packageService = apiBaseService.injectEndpoints({
       },
     }),
     addAccessPackageConfig: builder.mutation<any, { package_name: string; user_name: string; grant_access: boolean }>({
+      
       query: ({ package_name, user_name, grant_access }) => ({
         url: "/access_pkg_config",
         method: "POST",
@@ -52,6 +53,7 @@ const packageService = apiBaseService.injectEndpoints({
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
+          console.log("Adding access package config");
           dispatch(setIsLoading(true));
           await queryFulfilled;
         } catch (error) {

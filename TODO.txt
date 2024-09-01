@@ -1,4 +1,10 @@
---> Format package listing, dont show user ID but show username
+--> Frontend bugs: URGENT:
+- Keeping the Package Distribution list while swapping users!
+
+--> Share package action
+    See          (addAccessPackageConfig), handleShowShare - removeSelectedPackage?! see function and fix, debug. See sharing test in backend!
+--> Remove package action - full implementation
+    Use the implementation of above? see related includes / imports / dependencies to not miss anything. See on the slice files if I need to add sth
 
 --> Format logged username top-right, not just a horrible black text
 
@@ -8,4 +14,4 @@
 
 --> Footer - style as Gui is proposing
 
---> CaOS content 
+--> CaOS content fix

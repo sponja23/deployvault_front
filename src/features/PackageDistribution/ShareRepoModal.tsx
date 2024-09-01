@@ -8,12 +8,12 @@ interface ShareRepoModalProps {
   show: boolean;
   onHide: () => void;
   onShare: (email: string) => void;
-  email: string;
-  setEmail: (email: string) => void;
+  nameToShare: string;
+  setTargetName: (nameToShare: string) => void;
   selectedRepo: any;
 }
 
-const ShareRepoModal: React.FC<ShareRepoModalProps> = ({ show, onHide, onShare, email, setEmail, selectedRepo }) => {
+const ShareRepoModal: React.FC<ShareRepoModalProps> = ({ show, onHide, onShare, nameToShare, setTargetName, selectedRepo }) => {
   const isLoading = useAppSelector(selectIsLoading);
 
   const content = isLoading ? (
@@ -26,8 +26,8 @@ const ShareRepoModal: React.FC<ShareRepoModalProps> = ({ show, onHide, onShare, 
       <Modal.Body>
         <Form>
           <Form.Group controlId="formEmail">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Form.Label>User Name</Form.Label>
+            <Form.Control type="email" placeholder="Enter target user name" value={nameToShare} onChange={(e) => setTargetName(e.target.value)} />
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -35,7 +35,7 @@ const ShareRepoModal: React.FC<ShareRepoModalProps> = ({ show, onHide, onShare, 
         <Button variant="secondary" onClick={onHide}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onShare(email)}>
+        <Button variant="primary" onClick={() => onShare(nameToShare)}>
           Share
         </Button>
       </Modal.Footer>
