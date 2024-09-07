@@ -1,5 +1,6 @@
 --> Frontend bugs: URGENT:
 - Keeping the Package Distribution list while swapping users!
+- Infinite request bug when there are no packages available!
 
 --> Share package action
     See          (addAccessPackageConfig), handleShowShare - removeSelectedPackage?! see function and fix, debug. See sharing test in backend!
