@@ -2,11 +2,6 @@
 - Keeping the Package Distribution list while swapping users!
 - Infinite request bug when there are no packages available!
 
---> Share package action
-    See          (addAccessPackageConfig), handleShowShare - removeSelectedPackage?! see function and fix, debug. See sharing test in backend!
---> Remove package action - full implementation
-    Use the implementation of above? see related includes / imports / dependencies to not miss anything. See on the slice files if I need to add sth
-
 --> Format logged username top-right, not just a horrible black text
 
 --> Move footer to be always at the bottom of the screen? Package list minimum height??
