@@ -1,5 +1,3 @@
-import { em } from "@fullcalendar/core/internal-common";
-import { useAppSelector } from "../hooks";
 import { GrantedPackage, UploadedPackage, setGrantedPackages, setUploadedPackages } from "../slices/packageSlice";
 import { setIsError, setIsLoading } from "../slices/uiSlice";
 import { apiBaseService } from "./apiBaseService";
@@ -37,8 +35,6 @@ const packageService = apiBaseService.injectEndpoints({
           dispatch(setIsLoading(true));
           const { data } = await queryFulfilled;
           dispatch(setGrantedPackages(data));
-        } catch (error) {
-          throw error;
         } finally {
           dispatch(setIsLoading(false));
         }

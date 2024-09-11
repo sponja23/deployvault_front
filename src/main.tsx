@@ -11,11 +11,14 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import { PrimeReactProvider } from "primereact/api";
+import { AuthProvider } from "./auth/AuthContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <PrimeReactProvider>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </PrimeReactProvider>
+    <PrimeReactProvider>
+        <Provider store={store}>
+            <AuthProvider>
+                <App />
+            </AuthProvider>
+        </Provider>
+    </PrimeReactProvider>
 );

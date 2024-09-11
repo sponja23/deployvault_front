@@ -1,6 +1,4 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import authReducer, { AuthState } from "./slices/authSlice";
-import userReducer, { UserState } from "./slices/userSlice";
 import packagesReducer, { PackageState } from "./slices/packageSlice";
 import uiReducer, { UiState } from "./slices/uiSlice";
 
@@ -9,15 +7,11 @@ import uiReducer, { UiState } from "./slices/uiSlice";
  * @returns The combined reducer function.
  */
 const rootReducer = combineReducers({
-  auth: authReducer,
-  user: userReducer,
   packages: packagesReducer,
   ui: uiReducer,
 });
 
 export type RootState = {
-  auth: AuthState;
-  user: UserState;
   package: PackageState;
   ui: UiState;
 };

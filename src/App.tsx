@@ -4,7 +4,6 @@ import { Layout } from "./views/Layout";
 import { Landing } from "./views/Landing/Landing";
 import { Profile } from "./views/Profile/Profile";
 import { AuthForm } from "./features/Authentication/AuthForm";
-import { Container } from "react-bootstrap";
 import { RequireAuth } from "./features/Authentication/RequireAuth";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -21,7 +20,6 @@ const App: React.FC = () => {
     <>
       <Router>
         <Routes>
-          /*Publics routes */
           <Route path="/auth" element={<AuthForm />} />
           <Route path="/register" element={<AuthForm />} />
           <Route path="/" element={<Layout />}>

@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { clearAuth } from "../slices/authSlice";
-import { clearUser } from "../slices/userSlice";
+import Cookies from "js-cookie";
 
 /**
  * The base query for making API requests.
@@ -12,7 +11,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     // Optional: Get token from state and set it in headers
     //@ts-ignore
-    const token = getState().global.auth.access_token;
+    const token = Cookies.get("authToken");
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -38,8 +37,6 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
   if (meta?.response?.status === 401) {
     //TODO 2024-07-29 Mariano: Implement refresh token logic
-    api.dispatch(clearAuth());
-    api.dispatch(clearUser());
   }
   return result;
 };
