@@ -1,24 +1,12 @@
 import { useState } from "react";
 import {
-    useAddAccessPackageConfigMutation,
-    useGetUploadedReposMutation,
-} from "../../redux/services/packageService";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-    UploadedPackage,
-    addSelectedPackage,
-    removeSelectedPackage,
-    selectCurrentSelectedPackage,
-} from "../../redux/slices/packageSlice";
-import {
     DataTable,
     DataTableExpandedRows,
     DataTableValueArray,
 } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
-import useAuth from "../../auth/useAuth";
-import usePackages from "../../packages/usePackages";
+import usePackages, { UploadedPackage } from "../../packages/usePackages";
 
 /**
  * Custom hook for managing package distribution.
@@ -34,20 +22,19 @@ import usePackages from "../../packages/usePackages";
  *   - setEmail: A function to set the email for sharing the repository.
  */
 const usePackageDistribution = () => {
-    const dispatch = useAppDispatch();
-    const { user } = useAuth();
-    const selectedRepo = useAppSelector(selectCurrentSelectedPackage);
-    const [getPackages] = useGetUploadedReposMutation();
-    const [addAccessPackage] = useAddAccessPackageConfigMutation();
     const [showShare, setShowShare] = useState(false);
     const [email, setEmail] = useState("");
+    const [selectedPackage, setSelectedPackage] =
+        useState<UploadedPackage | null>(null);
 
     const [expandedRows, setExpandedRows] = useState<
         DataTableExpandedRows | DataTableValueArray | undefined
     >(undefined);
 
     const {
-        uploadedPackages: { data: uploadedPackages },
+        uploadedPackages: { data: uploadedPackages, isLoading: loading },
+        grantAccess,
+        revokeAccess,
     } = usePackages();
 
     const rowExpansionTemplate = (data: UploadedPackage) => {
@@ -80,23 +67,7 @@ const usePackageDistribution = () => {
     const handleRemoveAccess = (package_name: string, nameToShare: string) => {
         console.log(`Removing access for user: ${nameToShare}`);
         try {
-            dispatch(removeSelectedPackage());
-            const body = {
-                package_name: package_name,
-                user_name: nameToShare,
-                grant_access: false,
-            };
-            addAccessPackage(body)
-                .then((res: any) => {
-                    console.log(res);
-                    // getPackages(currentUser!.username ?? "");
-                    if (res?.data.message == "Access revoked successfully.") {
-                        getPackages(user!.username ?? "");
-                    }
-                })
-                .catch((err) => {
-                    console.log(`Error: ${err}`);
-                });
+            revokeAccess(package_name, nameToShare);
         } catch (error) {
             console.log(`Error: ${error}`);
         }
@@ -111,31 +82,17 @@ const usePackageDistribution = () => {
 
     const handleCloseShare = () => setShowShare(false);
 
-    const handleShowShare = (content: string | string[] | any) => {
-        dispatch(addSelectedPackage(content));
+    const handleShowShare = (pkg: UploadedPackage) => {
+        setSelectedPackage(pkg);
         setShowShare(true);
     };
 
     const handleShare = (nameToShare: string) => {
         console.log(`Sharing with user: ${nameToShare}`);
         try {
-            dispatch(removeSelectedPackage());
-            const body = {
-                package_name: selectedRepo!.package_name,
-                user_name: nameToShare,
-                grant_access: true,
-            };
-            addAccessPackage(body)
-                .then((res: any) => {
-                    if (res?.data.message == "Access granted successfully") {
-                        getPackages(user!.username ?? "");
-                        setShowShare(false);
-                        setEmail("");
-                    }
-                })
-                .catch((err) => {
-                    console.log(`Error: ${err}`);
-                });
+            grantAccess(selectedPackage!.package_name, nameToShare);
+            setShowShare(false);
+            setEmail("");
         } catch (error) {
             console.log(`Error: ${error}`);
         }
@@ -150,11 +107,12 @@ const usePackageDistribution = () => {
         handleRemoveAccess,
         email,
         setEmail,
-        selectedRepo,
+        selectedPackage,
         rowExpansionTemplate,
         allowExpansion,
         expandedRows,
         setExpandedRows,
+        loading,
     };
 };
 
