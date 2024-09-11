@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     useAddAccessPackageConfigMutation,
     useGetUploadedReposMutation,
@@ -9,7 +9,6 @@ import {
     addSelectedPackage,
     removeSelectedPackage,
     selectCurrentSelectedPackage,
-    selectCurrentUploadedPackages,
 } from "../../redux/slices/packageSlice";
 import {
     DataTable,
@@ -18,9 +17,8 @@ import {
 } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
-import { RootState } from "../../redux/store";
-import { setIsError } from "../../redux/slices/uiSlice";
 import useAuth from "../../auth/useAuth";
+import usePackages from "../../packages/usePackages";
 
 /**
  * Custom hook for managing package distribution.
@@ -37,12 +35,8 @@ import useAuth from "../../auth/useAuth";
  */
 const usePackageDistribution = () => {
     const dispatch = useAppDispatch();
-    const uploadedPackages = useAppSelector(selectCurrentUploadedPackages);
     const { user } = useAuth();
     const selectedRepo = useAppSelector(selectCurrentSelectedPackage);
-    const isError = useAppSelector(
-        (state: RootState) => state.global.ui.isError
-    );
     const [getPackages] = useGetUploadedReposMutation();
     const [addAccessPackage] = useAddAccessPackageConfigMutation();
     const [showShare, setShowShare] = useState(false);
@@ -51,6 +45,10 @@ const usePackageDistribution = () => {
     const [expandedRows, setExpandedRows] = useState<
         DataTableExpandedRows | DataTableValueArray | undefined
     >(undefined);
+
+    const {
+        uploadedPackages: { data: uploadedPackages },
+    } = usePackages();
 
     const rowExpansionTemplate = (data: UploadedPackage) => {
         return (
@@ -142,19 +140,6 @@ const usePackageDistribution = () => {
             console.log(`Error: ${error}`);
         }
     };
-
-    useEffect(() => {
-        if (uploadedPackages.length === 0 && !isError) {
-            getPackages(user!.username ?? "");
-        }
-    }, [getPackages]);
-
-    useEffect(() => {
-        return () => {
-            dispatch(setIsError(false));
-            // dispatch(clearUploadedPackages());
-        };
-    }, [dispatch]);
 
     return {
         uploadedPackages,
