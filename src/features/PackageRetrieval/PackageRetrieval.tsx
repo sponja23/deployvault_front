@@ -8,7 +8,7 @@ import {
 } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { formatDate } from "../../util/dateHelpers/dateHelpers";
-import usePackages, { GrantedPackage } from "../../packages/usePackages";
+import useGrantedPackages, { GrantedPackage } from "./useGrantedPackages";
 
 const PackageRetrieval: React.FC = () => {
   const [expandedRows, setExpandedRows] = useState<
@@ -16,9 +16,7 @@ const PackageRetrieval: React.FC = () => {
   >(undefined);
   const [copied, setCopied] = useState<string | null>(null);
 
-  const {
-    grantedPackages: { data: sharedPackages, isLoading: loading },
-  } = usePackages();
+  const { packages, isLoading } = useGrantedPackages();
 
   const handleCopy = (repo: string) => {
     navigator.clipboard.writeText(`pip install ${repo}`);
@@ -26,13 +24,13 @@ const PackageRetrieval: React.FC = () => {
     setTimeout(() => setCopied(null), 1500); // Reset after 1.5 seconds
   };
 
-  const content = loading ? (
+  return isLoading ? (
     <CaosSpinner />
   ) : (
     <div className="card">
       <DataTable
-        loading={loading}
-        value={sharedPackages}
+        loading={isLoading}
+        value={packages}
         paginator
         rows={10}
         rowsPerPageOptions={[5, 10, 25, 50]}
@@ -80,8 +78,6 @@ const PackageRetrieval: React.FC = () => {
       </DataTable>
     </div>
   );
-
-  return content;
 };
 
 export default PackageRetrieval;

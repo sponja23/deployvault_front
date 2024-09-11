@@ -9,7 +9,7 @@ import {
 import { formatDate } from "../../util/dateHelpers/dateHelpers";
 import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
 import { CaosSpinner } from "../../components/CaOSSpinner/CaosSpinner";
-import usePackages, { UploadedPackage } from "../../packages/usePackages";
+import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
 
 /**
  * Represents the package distribution component.
@@ -20,17 +20,13 @@ const PackageDistribution: React.FC = () => {
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
-  const {
-    grantAccess,
-    uploadedPackages: { data: uploadedPackages, isLoading: loading },
-    revokeAccess,
-  } = usePackages();
+  const { grantAccess, revokeAccess, packages, isLoading } =
+    useUploadedPackages();
 
   const [showShare, setShowShare] = useState(false);
   const [selectedPackage, setSelectedPackage] =
     useState<UploadedPackage | null>(null);
 
-  // TODO: Maybe move this
   const handleShare = (nameToShare: string) => {
     console.log(`Sharing with user: ${nameToShare}`);
     try {
@@ -70,13 +66,13 @@ const PackageDistribution: React.FC = () => {
     );
   };
 
-  const content = loading ? (
+  return isLoading ? (
     <CaosSpinner />
   ) : (
     <div className="card">
       <DataTable
-        loading={loading}
-        value={uploadedPackages}
+        loading={isLoading}
+        value={packages}
         paginator
         rows={10}
         rowsPerPageOptions={[5, 10, 25, 50]}
@@ -128,8 +124,6 @@ const PackageDistribution: React.FC = () => {
       />
     </div>
   );
-
-  return content;
 };
 
 export default PackageDistribution;

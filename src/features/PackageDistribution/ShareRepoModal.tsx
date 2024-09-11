@@ -1,5 +1,5 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { UploadedPackage } from "../../packages/usePackages";
+import { UploadedPackage } from "./useUploadedPackages";
 import { useState } from "react";
 
 type ShareRepoModalProps = {
