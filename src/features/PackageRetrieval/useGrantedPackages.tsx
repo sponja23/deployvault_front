@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import useAPIQuery from "../../api/useAPIQuery";
+import { apiQuery } from "../../api/apiQueries";
 import useAuth from "../../auth/useAuth";
 
 export type GrantedPackage = {
@@ -13,13 +13,12 @@ export type GrantedPackage = {
 };
 
 export default function useGrantedPackages() {
-  const { query } = useAPIQuery();
   const { user } = useAuth();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["granted-packages", user?.username],
     queryFn: () =>
-      query<GrantedPackage[]>(`/shared_packages_list/${user?.username}`),
+      apiQuery<GrantedPackage[]>(`/shared_packages_list/${user?.username}`),
   });
 
   return {

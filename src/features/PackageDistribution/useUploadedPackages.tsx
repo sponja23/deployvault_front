@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useAPIQuery from "../../api/useAPIQuery";
+import { apiMutation, apiQuery } from "../../api/apiQueries";
 import useAuth from "../../auth/useAuth";
 
 export type UploadedPackage = {
@@ -15,13 +15,12 @@ export type UploadedPackage = {
 
 export default function useUploadedPackages() {
   const queryClient = useQueryClient();
-  const { query, mutation } = useAPIQuery();
   const { user } = useAuth();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["uploaded-packages", user?.username],
     queryFn: () =>
-      query<UploadedPackage[]>(
+      apiQuery<UploadedPackage[]>(
         `/uploaded_packages_list/${user?.username}`, // TODO: This shouldn't be necessary, the API should identify the user from the token
       ),
   });
@@ -32,7 +31,7 @@ export default function useUploadedPackages() {
       user_name: string;
       action: "grant" | "revoke";
     }) => {
-      return mutation<
+      return apiMutation<
         {
           package_name: string;
           user_name: string;
