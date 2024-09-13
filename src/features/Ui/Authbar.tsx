@@ -1,16 +1,14 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
 
-export const Authbar: React.FC = () => {
+export function Authbar() {
   return (
-    <>
+    <div className="flex gap-2">
       <Link to="/auth" id="SignInButton">
-        <CaOSButton label="Sign In" variant="outline-light" className="me-2" size="medium" />
+        <button>Sign In</button>
       </Link>
       <Link to="/register" id="SingUpButton">
-        <CaOSButton label="Sign Up" variant="outline-light" className="mr-8" size="medium" />
+        <button>Sign Up</button>
       </Link>
-    </>
+    </div>
   );
-};
+}

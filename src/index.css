@@ -7,15 +7,74 @@
 :root {
   --font-base: "DM Sans", sans-serif;
 
-  --primary-color: #0F0F44;
+  --primary-color: #0f0f44;
   --secondary-color: #368600;
   --black-color: #030303;
-  --lightGray-color: #e4e4e4;
-  --gray-color: #005068;
   --violet-color: #814191;
   --white-color: #ffffff;
 }
 
-body {
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
 
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
+  }
+
+  h5 {
+    @apply text-lg;
+  }
+
+  h6 {
+    @apply text-base;
+  }
+
+  button {
+    @apply bg-primary text-white 
+            flex items-center justify-center gap-2
+            px-4 py-2 rounded-md font-semibold 
+            transition-all duration-200 ease-in-out;
+
+    &:hover {
+      @apply bg-caos-gray-200 text-accent;
+    }
+
+    &:active {
+      @apply bg-caos-gray-300;
+    }
+
+    &:disabled {
+      @apply bg-caos-gray-200 text-caos-gray-400 cursor-not-allowed;
+    }
+
+    &.accent-button {
+      @apply bg-accent text-white;
+
+      &:hover {
+        @apply bg-accent-hover text-white;
+      }
+
+      &:active {
+        @apply bg-accent-active text-white;
+      }
+
+      &:disabled {
+        @apply bg-accent-hover text-white cursor-not-allowed;
+      }
+    }
+  }
 }
