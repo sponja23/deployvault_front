@@ -26,11 +26,11 @@ function NavLink({ to, children }: { to: string; children: ReactNode }) {
   );
 }
 
-export function NavBar() {
+export function Header() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between">
+    <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between h-[75px]">
       <Link to="/">
         <Image src={dvault_navbar} alt="Logo" className="h-6" />
       </Link>

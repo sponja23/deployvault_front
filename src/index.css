@@ -43,6 +43,10 @@
     @apply text-base;
   }
 
+  section {
+    @apply px-14 py-20;
+  }
+
   button {
     @apply bg-primary text-white 
             flex items-center justify-center gap-2
