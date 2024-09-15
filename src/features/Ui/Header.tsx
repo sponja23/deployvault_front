@@ -30,7 +30,7 @@ export function Header() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between h-[75px]">
+    <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between h-[75px] z-30">
       <Link to="/">
         <Image src={dvault_navbar} alt="Logo" className="h-6" />
       </Link>

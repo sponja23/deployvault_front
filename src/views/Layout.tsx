@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Header } from "../features/Ui/Navbar";
+import { Header } from "../features/Ui/Header";
 import Footer from "../features/Ui/Footer";
 
 export const Layout = () => {

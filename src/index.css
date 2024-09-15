@@ -15,7 +15,12 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-bold;
   }
 
@@ -80,5 +85,24 @@
         @apply bg-accent-hover text-white cursor-not-allowed;
       }
     }
+  }
+
+  input,
+  textarea {
+    @apply w-full px-4 py-2 border border-caos-gray-200 rounded-md outline-none;
+
+    &::placeholder {
+      @apply text-caos-gray-400;
+    }
+
+    &:focus {
+      @apply border-primary-400;
+    }
+  }
+}
+
+@layer components {
+  .invalid-feedback {
+    @apply text-red-500 text-sm;
   }
 }

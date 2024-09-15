@@ -18,10 +18,10 @@ export const AuthForm = () => {
           style={{ maxWidth: "500px" }}
         />
       </Link>
-      <div className="p-4 w-[400px] border border-caos-gray-300 rounded-lg gap-3 flex flex-col">
+      <div className="p-10 w-[400px] border border-caos-gray-300 rounded-lg gap-3 flex flex-col">
         <h2 className="">{pathname === "/auth" ? "Sign in" : "Register"}</h2>
         <FormikProvider value={formik}>
-          <Form className="w-100" onSubmit={formik.handleSubmit}>
+          <Form className="w-full" onSubmit={formik.handleSubmit}>
             {pathname === "/register" && (
               <div className="form-group mb-3">
                 <Field
@@ -78,7 +78,7 @@ export const AuthForm = () => {
             </div>
             <button
               type="submit"
-              className="w-100 d-flex align-items-center justify-content-center"
+              className="w-full"
               disabled={formik.isSubmitting}
             >
               {pathname === "/auth" ? "Sign in" : "Register"}
