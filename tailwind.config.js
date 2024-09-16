@@ -6,17 +6,13 @@ export default {
       colors: {
         primary: {
           DEFAULT: "#0f0f44",
-          50: "#f2f2ff",
-          100: "#e6e6ff",
           200: "#bfbfff",
-          300: "#9999ff",
-          400: "#9047C9",
-          500: "#0f0f44",
-          600: "#0d0d3d",
-          700: "#0a0a2e",
+          300: "#1B1B74",
+          400: "#0f0f44",
+          500: "#050521",
+          600: "#0a0a2e",
         },
-        secondary: "#368600",
-        accent: { DEFAULT: "#814191", hover: "#6b3574", active: "#4d1f4b" },
+        accent: { DEFAULT: "#9047C9", hover: "#621F96", active: "#4D1A7F" },
         "caos-black": "#030303",
         "caos-gray": {
           100: "#f8f9fa",
@@ -24,6 +20,12 @@ export default {
           300: "#aaaaaa",
           400: "#666666",
         },
+      },
+      backgroundImage: {
+        hero: "url('/src/assets/hero.svg')",
+      },
+      fontFamily: {
+        rubik: ["'Rubik', sans-serif"],
       },
     },
   },

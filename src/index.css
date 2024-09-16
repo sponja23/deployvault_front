@@ -21,7 +21,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold;
+    @apply font-bold font-rubik;
   }
 
   h1 {
@@ -53,17 +53,17 @@
   }
 
   button {
-    @apply bg-primary text-white 
+    @apply bg-primary-300 text-white 
             flex items-center justify-center gap-2
-            px-4 py-2 rounded-md font-semibold 
+            px-4 py-2 font-semibold 
             transition-all duration-200 ease-in-out;
 
     &:hover {
-      @apply bg-caos-gray-200 text-accent;
+      @apply bg-primary;
     }
 
     &:active {
-      @apply bg-caos-gray-300;
+      @apply bg-primary-500;
     }
 
     &:disabled {

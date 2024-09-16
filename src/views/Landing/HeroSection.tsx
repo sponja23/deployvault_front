@@ -4,7 +4,7 @@ import useAuth from "../../auth/useAuth";
 export function HeroSection() {
   const { user } = useAuth();
   return (
-    <section className="flex flex-col gap-10 bg-primary-500 text-white">
+    <section className="flex flex-col gap-10 bg-primary text-white min-h-[650px] bg-hero bg-no-repeat bg-right">
       <div className="flex flex-col justify-start w-fit">
         <h2 className="text-8xl">Welcome to</h2>
         <h2 className="text-8xl">DeployVault</h2>
