@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ShareRepoModal from "./ShareRepoModal";
 import { formatDate } from "../../util/dateHelpers/dateHelpers";
 import { CaosSpinner } from "../../components/CaOSSpinner/CaosSpinner";
 import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
 
-/**
- * Represents the package distribution component.
- * @returns The package distribution component.
- */
-const PackageDistribution: React.FC = () => {
-  const { grantAccess, packages, isLoading } = useUploadedPackages();
+export default function PackageDistribution() {
+  const { grantAccess, revokeAccess, packages, isLoading } =
+    useUploadedPackages();
 
   const [showShare, setShowShare] = useState(false);
   const [selectedPackage, setSelectedPackage] =
@@ -19,20 +16,19 @@ const PackageDistribution: React.FC = () => {
     console.log(`Sharing with user: ${nameToShare}`);
     try {
       grantAccess(selectedPackage!.package_name, nameToShare);
-      setShowShare(false);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
   };
 
-  // const handleRemoveAccess = (package_name: string, nameToShare: string) => {
-  //   console.log(`Removing access for user: ${nameToShare}`);
-  //   try {
-  //     revokeAccess(package_name, nameToShare);
-  //   } catch (error) {
-  //     console.error(`Error: ${error}`);
-  //   }
-  // };
+  const handleRevoke = (nameToRevoke: string) => {
+    console.log(`Removing access for user: ${nameToRevoke}`);
+    try {
+      revokeAccess(selectedPackage!.package_name, nameToRevoke);
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
+  };
 
   return isLoading ? (
     <CaosSpinner />
@@ -95,12 +91,11 @@ const PackageDistribution: React.FC = () => {
       </div>
       <ShareRepoModal
         show={showShare}
-        onHide={() => setShowShare(false)}
+        onClose={() => setShowShare(false)}
         onShare={handleShare}
+        onRevoke={handleRevoke}
         selectedPackage={selectedPackage}
       />
     </div>
   );
-};
-
-export default PackageDistribution;
+}
