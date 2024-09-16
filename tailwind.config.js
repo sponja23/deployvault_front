@@ -11,6 +11,8 @@ export default {
           400: "#0f0f44",
           500: "#050521",
           600: "#0a0a2e",
+          odds: "#09092C",
+          evens: "#09093D",
         },
         accent: {
           DEFAULT: "#9047C9",

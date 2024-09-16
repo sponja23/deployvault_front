@@ -2,7 +2,7 @@ import deployVault_logo from "../../assets/logo_deployvault_inverted.png";
 import { Link } from "react-router-dom";
 import { useAuthForm } from "./useAuthForm";
 import { FaGoogle, FaGithub } from "react-icons/fa";
-import { Form, Image } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { FormikProvider, Field, ErrorMessage } from "formik";
 
 export const AuthForm = () => {
@@ -11,7 +11,7 @@ export const AuthForm = () => {
   return (
     <div className="flex flex-col justify-center items-center pt-5 gap-4">
       <Link to="/">
-        <Image
+        <img
           src={deployVault_logo}
           alt="CaOS Logo"
           className="mb-4"

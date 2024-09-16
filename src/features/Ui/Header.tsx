@@ -1,4 +1,3 @@
-import { Image } from "react-bootstrap";
 import dvault_navbar from "../../assets/logo_deployvault.png";
 import { Profilebar } from "./Profilebar";
 import { Authbar } from "./Authbar";
@@ -32,7 +31,7 @@ export function Header() {
   return (
     <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between h-[75px] z-30">
       <Link to="/">
-        <Image src={dvault_navbar} alt="Logo" className="h-6" />
+        <img src={dvault_navbar} alt="Logo" className="h-6" />
       </Link>
       <nav>
         {isAuthenticated ? (
