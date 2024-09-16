@@ -15,7 +15,7 @@ export function HeroSection() {
         for small businesses and independent developers.
       </p>
       <div className="flex gap-3">
-        <button className="accent-button">Learn More</button>
+        <button className="border-button">Learn More</button>
         <Link to={user ? "/home" : "/auth"}>
           <button className="accent-button">
             {user ? "Dashboard" : "Join Us"}

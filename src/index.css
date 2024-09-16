@@ -15,13 +15,17 @@
 }
 
 @layer base {
+  * {
+    @apply font-rubik;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-bold font-rubik;
+    @apply font-bold;
   }
 
   h1 {
@@ -55,8 +59,8 @@
   button {
     @apply bg-primary-300 text-white 
             flex items-center justify-center gap-2
-            px-4 py-2 font-semibold 
-            transition-all duration-200 ease-in-out;
+            px-4 py-2
+            transition-all duration-150 ease-in-out;
 
     &:hover {
       @apply bg-primary;
@@ -71,18 +75,34 @@
     }
 
     &.accent-button {
-      @apply bg-accent text-white;
+      @apply bg-accent;
 
       &:hover {
-        @apply bg-accent-hover text-white;
+        @apply bg-accent-hover;
       }
 
       &:active {
-        @apply bg-accent-active text-white;
+        @apply bg-accent-active;
       }
 
       &:disabled {
-        @apply bg-accent-hover text-white cursor-not-allowed;
+        @apply bg-accent-hover cursor-not-allowed;
+      }
+    }
+
+    &.border-button {
+      @apply bg-transparent border border-white;
+
+      &:hover {
+        @apply bg-accent/30;
+      }
+
+      &:active {
+        @apply bg-accent/40;
+      }
+
+      &:disabled {
+        @apply bg-white/20 cursor-not-allowed;
       }
     }
   }

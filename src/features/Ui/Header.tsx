@@ -15,9 +15,9 @@ function NavLink({ to, children }: { to: string; children: ReactNode }) {
     <Link
       to={to}
       className={twMerge(
-        "hover:text-white hover:bg-accent-hover px-3 py-2 rounded-md transition-all duration-150 ease-in-out",
+        "hover:text-white hover: px-3 py-2 transition-all duration-150 ease-in-out",
         isActive
-          ? "text-white bg-accent-hover"
+          ? "text-white underline underline-offset-8"
           : "text-caos-gray-200 bg-transparent",
       )}
     >

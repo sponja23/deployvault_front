@@ -12,7 +12,15 @@ export default {
           500: "#050521",
           600: "#0a0a2e",
         },
-        accent: { DEFAULT: "#9047C9", hover: "#621F96", active: "#4D1A7F" },
+        accent: {
+          DEFAULT: "#9047C9",
+          hover: "#621F96",
+          active: "#4D1A7F",
+          500: "#621F96",
+          600: "#4D1A7F",
+          700: "#3D1469",
+          800: "#2E1053",
+        },
         "caos-black": "#030303",
         "caos-gray": {
           100: "#f8f9fa",
