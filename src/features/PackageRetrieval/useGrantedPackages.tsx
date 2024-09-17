@@ -8,7 +8,7 @@ export type GrantedPackage = {
   package_id: string;
   package_name: string;
   public: boolean;
-  size: string;
+  size: number;
   version: string;
 };
 

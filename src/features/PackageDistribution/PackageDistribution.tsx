@@ -87,7 +87,7 @@ export default function PackageDistribution() {
         <div className="text-center">
           <h1 className="text-2xl font-medium">No packages uploaded yet</h1>
           <p className="text-lg font-light">
-            Upload a package to start sharing it with your team
+            Upload a package to start sharing it
           </p>
         </div>
       ) : (
