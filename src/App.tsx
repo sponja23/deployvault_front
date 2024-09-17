@@ -1,4 +1,3 @@
-import "./App.css";
 import { Home } from "./views/Home/Home";
 import { Layout } from "./views/Layout";
 import { Profile } from "./views/Profile/Profile";
@@ -11,11 +10,7 @@ import PackageRetrieval from "./features/PackageRetrieval/PackageRetrieval";
 import PackageDistribution from "./features/PackageDistribution/PackageDistribution";
 import Landing from "./views/Landing/Landing";
 
-/**
- * The main component of the application.
- * Renders the application layout and sets up the routing.
- */
-const App: React.FC = () => {
+export default function App() {
   return (
     <>
       <Router>
@@ -43,6 +38,4 @@ const App: React.FC = () => {
       <ToastContainer />
     </>
   );
-};
-
-export default App;
+}

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { CaosSpinner } from "../../components/CaOSSpinner/CaosSpinner";
+import LoadingSpinner from "../Ui/LoadingSpinner";
 import useGrantedPackages, { GrantedPackage } from "./useGrantedPackages";
 import { Table } from "../PackageDistribution/Table";
 import { formatDate } from "../../util/dateHelpers/dateHelpers";
 
-const PackageRetrieval: React.FC = () => {
+export default function PackageRetrieval() {
   const [copied, setCopied] = useState<string | null>(null);
 
   const { packages, isLoading } = useGrantedPackages();
@@ -63,18 +63,18 @@ const PackageRetrieval: React.FC = () => {
   );
 
   return isLoading ? (
-    <CaosSpinner />
+    <LoadingSpinner />
   ) : (
     <div className="w-full h-full flex justify-center px-20 py-20">
       {!packages || packages.length === 0 ? (
         <div className="text-center">
-          <h1 className="text-2xl font-medium">You don't have access to any packages yet</h1>
+          <h1 className="text-2xl font-medium">
+            You don't have access to any packages yet
+          </h1>
         </div>
       ) : (
         <Table columns={columns} rows={packages} rowGenerator={rowGenerator} />
       )}
     </div>
   );
-};
-
-export default PackageRetrieval;
+}

@@ -7,7 +7,7 @@ export const RequireAuth = () => {
 
   // TODO: Loading for authentication? Maybe not necessary
   // if (loading) {
-  //     return <CaosSpinner />;
+  //     return <LoadingSpinner />;
   // }
   return isAuthenticated ? (
     <Outlet />

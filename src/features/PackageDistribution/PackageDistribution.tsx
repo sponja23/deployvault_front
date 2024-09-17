@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ShareRepoModal from "./ShareRepoModal";
 import { formatDate } from "../../util/dateHelpers/dateHelpers";
-import { CaosSpinner } from "../../components/CaOSSpinner/CaosSpinner";
+import LoadingSpinner from "../Ui/LoadingSpinner";
 import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
 import { Table } from "./Table";
 
@@ -80,7 +80,7 @@ export default function PackageDistribution() {
   );
 
   return isLoading ? (
-    <CaosSpinner />
+    <LoadingSpinner />
   ) : (
     <div className="w-full h-full flex justify-center px-20 py-20">
       {!packages || packages.length === 0 ? (
