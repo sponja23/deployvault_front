@@ -1,6 +1,7 @@
 import { FormEvent, useRef } from "react";
 import Modal from "../Ui/Modal";
 import { UploadedPackage } from "./useUploadedPackages";
+import { FaSearch } from "react-icons/fa";
 
 type ShareRepoModalProps = {
   show: boolean;
@@ -40,7 +41,7 @@ function InviteForm({ onShare }: { onShare: (username: string) => void }) {
           className="flex border border-white bg-transparent rounded-none px-4 py-3 cursor-text flex-grow items-center gap-3"
           onClick={() => inputRef.current?.focus()}
         >
-          <i className="pi pi-search" />
+          <FaSearch size={20} />
           <input
             id="search-input"
             type="text"

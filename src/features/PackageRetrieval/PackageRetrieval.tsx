@@ -69,7 +69,7 @@ export default function PackageRetrieval() {
       {!packages || packages.length === 0 ? (
         <div className="text-center">
           <h1 className="text-2xl font-medium">
-            You don't have access to any packages yet
+            You don't have access to any package yet
           </h1>
         </div>
       ) : (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 
 type Column<T> = {
@@ -46,7 +47,7 @@ export function Table<T extends object>({
           onChange={(e) => setFilter(e.target.value)}
         />
         <div className="w-5 h-5">
-          <i className="pi pi-search" />
+          <FaSearch size={20} />
         </div>
       </div>
       <table className="w-full text-center font-light text-lg">

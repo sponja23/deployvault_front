@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
 import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { FaCog } from "react-icons/fa";
 
 export const Profilebar = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const Profilebar = () => {
     >
       <div className="flex gap-3 items-center bg-black/10 px-3 py-2 rounded-md cursor-pointer hover:bg-black/20 active:bg-black/30 transition-all duration-150 ease-in-out">
         <span>{user!.email}</span>
-        <i className="pi pi-cog" />
+        <FaCog />
       </div>
       <div
         className={twMerge(
