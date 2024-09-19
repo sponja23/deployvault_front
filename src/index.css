@@ -109,7 +109,7 @@
 
   input,
   textarea {
-    @apply w-full px-4 py-2 border border-caos-gray-200 rounded-md outline-none;
+    @apply w-full px-4 py-2 border border-caos-gray-200 rounded-none outline-none;
 
     &::placeholder {
       @apply text-caos-gray-400;

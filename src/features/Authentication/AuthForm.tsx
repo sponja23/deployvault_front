@@ -1,12 +1,34 @@
 import deployVault_logo from "../../assets/logo_deployvault_inverted.png";
-import { Link } from "react-router-dom";
-import { useAuthForm } from "./useAuthForm";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle, FaGithub } from "react-icons/fa";
-import { Form } from "react-bootstrap";
-import { FormikProvider, Field, ErrorMessage } from "formik";
+import useAuth from "../../auth/useAuth";
+import { FormEvent } from "react";
 
+
+// TODO: Divide the form into register and login forms
 export const AuthForm = () => {
-  const { formik, pathname } = useAuthForm();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { login, register } = useAuth();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const email = form.email.value;
+    const password = form.password.value;
+    const username = form.username?.value;
+
+    // TODO: Add validation here
+
+    if (pathname === "/auth") {
+      await login(email, password);
+    } else {
+      await register(username, email, password);
+    }
+
+    navigate("/home");
+  };
 
   return (
     <div className="flex flex-col justify-center items-center pt-5 gap-4">
@@ -18,92 +40,62 @@ export const AuthForm = () => {
           style={{ maxWidth: "500px" }}
         />
       </Link>
-      <div className="p-10 w-[400px] border border-caos-gray-300 rounded-lg gap-3 flex flex-col">
+      <div className="p-10 w-[400px] border border-caos-gray-300 gap-3 flex flex-col">
         <h2 className="">{pathname === "/auth" ? "Sign in" : "Register"}</h2>
-        <FormikProvider value={formik}>
-          <Form className="w-full" onSubmit={formik.handleSubmit}>
-            {pathname === "/register" && (
-              <div className="form-group mb-3">
-                <Field
-                  name="username"
-                  className={`form-control ${
-                    formik.errors.username && formik.touched.username
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  placeholder="Username"
-                  autoComplete="username" // Agrega este atributo
-                />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            )}
+        <form className="w-full" onSubmit={handleSubmit}>
+          {pathname === "/register" && (
             <div className="form-group mb-3">
-              <Field
-                name="email"
-                className={`form-control ${
-                  formik.errors.email && formik.touched.email
-                    ? "is-invalid"
-                    : ""
-                }`}
-                placeholder="Email"
-                autoComplete="email" // Agrega este atributo
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="invalid-feedback"
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                autoComplete="username"
               />
             </div>
-            <div className="form-group mb-3">
-              <Field
-                name="password"
-                type="password"
-                className={`form-control ${
-                  formik.errors.password && formik.touched.password
-                    ? "is-invalid"
-                    : ""
-                }`}
-                placeholder="Password"
-                autoComplete="current-password" // Agrega este atributo
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="invalid-feedback"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full"
-              disabled={formik.isSubmitting}
-            >
-              {pathname === "/auth" ? "Sign in" : "Register"}
-            </button>
-          </Form>
-          <div className="flex gap-3 items-center px-2">
-            <div className="border-b border-b-caos-gray-200 flex-grow" />
-            <span className="text-lg font-medium">or</span>
-            <div className="border-b border-b-caos-gray-200 flex-grow" />
+          )}
+          <div className="form-group mb-3">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              autoComplete="email"
+            />
           </div>
-          <div className="flex flex-col gap-2">
-            <button className="w-full bg-zinc-200 text-black">
-              <FaGoogle />
-              {pathname === "/auth"
-                ? "Sign in with Google"
-                : "Register in with Google"}
-            </button>
-            <button className="w-full bg-black">
-              <FaGithub />
-              {pathname === "/auth"
-                ? "Sign in with GitHub"
-                : "Register in with GitHub"}
-            </button>
+          <div className="form-group mb-3">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              autoComplete="current-password"
+            />
           </div>
-        </FormikProvider>
+          <button
+            type="submit"
+            className="w-full"
+            // disabled={isSubmitting}
+          >
+            {pathname === "/auth" ? "Sign in" : "Register"}
+          </button>
+        </form>
+        <div className="flex gap-3 items-center px-2">
+          <div className="border-b border-b-caos-gray-200 flex-grow" />
+          <span className="text-lg font-medium">or</span>
+          <div className="border-b border-b-caos-gray-200 flex-grow" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <button className="w-full bg-zinc-200 text-black">
+            <FaGoogle />
+            {pathname === "/auth"
+              ? "Sign in with Google"
+              : "Register in with Google"}
+          </button>
+          <button className="w-full bg-black">
+            <FaGithub />
+            {pathname === "/auth"
+              ? "Sign in with GitHub"
+              : "Register in with GitHub"}
+          </button>
+        </div>
         <div className="border-b border-b-caos-gray-200" />
         <div className="text-center">
           <div className="text-center">
