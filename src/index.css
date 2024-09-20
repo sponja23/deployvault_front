@@ -86,7 +86,23 @@
       }
 
       &:disabled {
-        @apply bg-accent-hover cursor-not-allowed;
+        @apply bg-zinc-400 text-accent-500 cursor-not-allowed;
+      }
+    }
+
+    &.dark-accent-button {
+      @apply bg-accent-500;
+
+      &:hover {
+        @apply bg-accent-600;
+      }
+
+      &:active {
+        @apply bg-accent-700;
+      }
+
+      &:disabled {
+        @apply bg-zinc-400 text-accent-500 cursor-not-allowed;
       }
     }
 

@@ -4,7 +4,6 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import useAuth from "../../auth/useAuth";
 import { FormEvent } from "react";
 
-
 // TODO: Divide the form into register and login forms
 export const AuthForm = () => {
   const navigate = useNavigate();
@@ -40,12 +39,13 @@ export const AuthForm = () => {
           style={{ maxWidth: "500px" }}
         />
       </Link>
-      <div className="p-10 w-[400px] border border-caos-gray-300 gap-3 flex flex-col">
+      <div className="p-10 w-[400px] gap-3 flex flex-col bg-primary text-white">
         <h2 className="">{pathname === "/auth" ? "Sign in" : "Register"}</h2>
         <form className="w-full" onSubmit={handleSubmit}>
           {pathname === "/register" && (
             <div className="form-group mb-3">
               <input
+                className="bg-transparent border"
                 type="text"
                 name="username"
                 placeholder="Username"
@@ -55,6 +55,7 @@ export const AuthForm = () => {
           )}
           <div className="form-group mb-3">
             <input
+              className="bg-transparent border"
               type="email"
               name="email"
               placeholder="Email"
@@ -63,6 +64,7 @@ export const AuthForm = () => {
           </div>
           <div className="form-group mb-3">
             <input
+              className="bg-transparent border"
               type="password"
               name="password"
               placeholder="Password"
@@ -71,7 +73,7 @@ export const AuthForm = () => {
           </div>
           <button
             type="submit"
-            className="w-full"
+            className="w-full dark-accent-button"
             // disabled={isSubmitting}
           >
             {pathname === "/auth" ? "Sign in" : "Register"}
@@ -83,33 +85,32 @@ export const AuthForm = () => {
           <div className="border-b border-b-caos-gray-200 flex-grow" />
         </div>
         <div className="flex flex-col gap-2">
-          <button className="w-full bg-zinc-200 text-black">
+          <button className="w-full bg-zinc-100 text-black hover:bg-zinc-300 active:bg-zinc-400">
             <FaGoogle />
             {pathname === "/auth"
               ? "Sign in with Google"
               : "Register in with Google"}
           </button>
-          <button className="w-full bg-black">
+          <button className="w-full bg-black hover:bg-zinc-900 active:bg-zinc-800">
             <FaGithub />
             {pathname === "/auth"
               ? "Sign in with GitHub"
               : "Register in with GitHub"}
           </button>
         </div>
-        <div className="border-b border-b-caos-gray-200" />
         <div className="text-center">
-          <div className="text-center">
+          <div className="text-center mt-3">
             {pathname === "/auth" ? (
-              <p>
-                New to CaOS?{" "}
-                <Link to="/register" className="text-accent font-medium">
+              <p className="flex gap-2 justify-center">
+                New to CaOS?
+                <Link to="/register" className="text-accent">
                   Create an account
                 </Link>
               </p>
             ) : pathname === "/register" ? (
-              <p>
-                Already have an account?{" "}
-                <Link to="/auth" className="text-accent font-medium">
+              <p className="flex gap-2 justify-center">
+                Already have an account?
+                <Link to="/auth" className="text-accent">
                   Sign in
                 </Link>
               </p>
