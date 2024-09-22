@@ -80,7 +80,9 @@ export default function PackageDistribution() {
   );
 
   return isLoading ? (
-    <LoadingSpinner />
+    <div className="w-full flex flex-col gap-4 justify-center items-center p-20">
+      <LoadingSpinner />
+    </div>
   ) : (
     <div className="w-full h-full flex justify-center px-20 py-20">
       {!packages || packages.length === 0 ? (

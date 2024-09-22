@@ -6,7 +6,7 @@ export function Authbar() {
       <Link to="/register" id="SingUpButton">
         <button>Register</button>
       </Link>
-      <Link to="/auth" id="SignInButton">
+      <Link to="/login" id="SignInButton">
         <button>Log in</button>
       </Link>
     </div>

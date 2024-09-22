@@ -1,13 +1,12 @@
 import deployVault_logo from "../../assets/logo_deployvault_inverted.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
 import { FormEvent } from "react";
 import { AuthForm, Input } from "./AuthForm";
 
 export default function Register() {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const { login, register } = useAuth();
+  const { register } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,15 +14,11 @@ export default function Register() {
     const form = e.currentTarget;
     const email = form.email.value;
     const password = form.password.value;
-    const username = form.username?.value;
+    const username = form.username.value;
 
     // TODO: Add validation here
 
-    if (pathname === "/auth") {
-      await login(email, password);
-    } else {
-      await register(username, email, password);
-    }
+    await register(username, email, password);
 
     navigate("/home");
   };
