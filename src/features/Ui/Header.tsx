@@ -37,7 +37,7 @@ export function Header() {
         {isAuthenticated ? (
           <ul className="flex gap-1 items-center text-caos-gray-200">
             <li>
-              <NavLink to="/home">Home</NavLink>
+              <NavLink to="/home">Dashboard</NavLink>
             </li>
             <li>
               <NavLink to="/packages-distribution">
