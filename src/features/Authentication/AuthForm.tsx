@@ -4,6 +4,7 @@ import { useAuthForm } from "./useAuthForm";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { Form, Image } from "react-bootstrap";
 import { FormikProvider, Field, ErrorMessage } from "formik";
+import { googleLogin } from "../../auth/googleAuth";
 
 export const AuthForm = () => {
   const { formik, pathname } = useAuthForm();
@@ -90,7 +91,10 @@ export const AuthForm = () => {
             <div className="border-b border-b-caos-gray-200 flex-grow" />
           </div>
           <div className="flex flex-col gap-2">
-            <button className="w-full bg-zinc-200 text-black">
+            <button
+              className="w-full bg-zinc-200 text-black"
+              onClick={() => googleLogin("/")}
+            >
               <FaGoogle />
               {pathname === "/auth"
                 ? "Sign in with Google"

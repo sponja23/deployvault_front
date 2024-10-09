@@ -17,7 +17,7 @@ export type QueryResult<T> =
       isError: true;
     };
 
-const BASE_PATH = "http://localhost:8000";
+export const BASE_PATH = "http://localhost:8000";
 
 export async function apiQuery<T>(path: string) {
   const token = Cookies.get("authToken");
