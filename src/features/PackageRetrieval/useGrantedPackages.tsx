@@ -16,9 +16,9 @@ export default function useGrantedPackages() {
   const { user } = useAuth();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["granted-packages", user?.username],
+    queryKey: ["granted-packages", user?.email],
     queryFn: () =>
-      apiQuery<GrantedPackage[]>(`/shared_packages_list/${user?.username}`),
+      apiQuery<GrantedPackage[]>(`/shared_packages_list/${user?.email}`),
   });
 
   return {

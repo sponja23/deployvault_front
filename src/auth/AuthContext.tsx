@@ -4,16 +4,9 @@ import Cookies from "js-cookie";
 
 export type User = {
   email: string;
-  username: string;
 };
 
-type LoginCredentials = {
-  email: string;
-  password: string;
-};
-
-type RegisterCredentials = {
-  username: string;
+type Credentials = {
   email: string;
   password: string;
 };
@@ -47,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const response = await apiMutation<
-      LoginCredentials,
+      Credentials,
       User & { access_token: string }
     >("/login", {
       email: email,
@@ -56,7 +49,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setUser({
       email, // TODO: Change this to response.email once the API is updated
-      username: response.username,
     });
     setToken(response.access_token);
   };
@@ -71,8 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     password: string,
   ) => {
-    await apiMutation<RegisterCredentials, never>("/signup", {
-      username: username,
+    await apiMutation<Credentials, never>("/signup", {
       email: email,
       password: password,
     });

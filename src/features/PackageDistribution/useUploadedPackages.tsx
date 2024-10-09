@@ -18,10 +18,10 @@ export default function useUploadedPackages() {
   const { user } = useAuth();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["uploaded-packages", user?.username],
+    queryKey: ["uploaded-packages", user?.email],
     queryFn: () =>
       apiQuery<UploadedPackage[]>(
-        `/uploaded_packages_list/${user?.username}`, // TODO: This shouldn't be necessary, the API should identify the user from the token
+        `/uploaded_packages_list/${user?.email}`, // TODO: This shouldn't be necessary, the API should identify the user from the token
       ),
   });
 
@@ -45,7 +45,7 @@ export default function useUploadedPackages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["uploaded-packages", user?.username],
+        queryKey: ["uploaded-packages", user?.email],
       });
     },
   });
