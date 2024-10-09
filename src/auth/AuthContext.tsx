@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const response = await apiMutation<
       Credentials,
       User & { access_token: string }
-    >("/login", {
+    >("/auth/login", {
       email: email,
       password: password,
     });
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     password: string,
   ) => {
-    await apiMutation<Credentials, never>("/signup", {
+    await apiMutation<Credentials, never>("/auth/signup", {
       email: email,
       password: password,
     });
