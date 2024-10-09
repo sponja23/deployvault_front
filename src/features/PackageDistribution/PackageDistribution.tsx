@@ -6,7 +6,6 @@ import {
   DataTableExpandedRows,
   DataTableValueArray,
 } from "primereact/datatable";
-import { formatDate } from "../../util/dateHelpers/dateHelpers";
 import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
 import { CaosSpinner } from "../../components/CaOSSpinner/CaosSpinner";
 import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
@@ -30,7 +29,7 @@ const PackageDistribution: React.FC = () => {
   const handleShare = (nameToShare: string) => {
     console.log(`Sharing with user: ${nameToShare}`);
     try {
-      grantAccess(selectedPackage!.package_name, nameToShare);
+      grantAccess(selectedPackage!.name, nameToShare);
       setShowShare(false);
     } catch (error) {
       console.log(`Error: ${error}`);
@@ -56,7 +55,7 @@ const PackageDistribution: React.FC = () => {
               <CaOSButton
                 label={`Remove permissions`}
                 onClick={() =>
-                  handleRemoveAccess(data.package_name, user.username)
+                  handleRemoveAccess(data.name, user.username)
                 } // Accessing the username property
               />
             )}
@@ -84,23 +83,15 @@ const PackageDistribution: React.FC = () => {
         <Column
           expander={(rowData: UploadedPackage) =>
             rowData.shared_users !== undefined &&
-            rowData.shared_users.filter((user) => user?.user_id).length > 0
+            rowData.shared_users.filter((user) => user?.id).length > 0
           }
           style={{ width: "5rem" }}
         />
-        <Column field="package_name" header="Name" sortable></Column>
-        <Column field="size" header="Size" sortable></Column>
-        <Column field="version" header="Version"></Column>
+        <Column field="name" header="Name" sortable></Column>
         <Column
           field="public"
           header="Accessibility"
           body={(row: UploadedPackage) => (row.public ? "Private" : "Private")}
-          sortable
-        ></Column>
-        <Column
-          field="created_at"
-          header="Upload Date"
-          body={(row: UploadedPackage) => formatDate(row.created_at)}
           sortable
         ></Column>
         <Column field="description" header="Description"></Column>

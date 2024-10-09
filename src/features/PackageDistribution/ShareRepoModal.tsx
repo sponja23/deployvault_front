@@ -21,7 +21,7 @@ export default function ShareRepoModal({
     <Modal show={show} onShow={() => setUsername("")} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>
-          Share Repository {selectedPackage?.package_name}1
+          Share Repository {selectedPackage?.name}1
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

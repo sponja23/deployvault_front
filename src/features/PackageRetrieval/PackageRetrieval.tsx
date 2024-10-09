@@ -7,7 +7,6 @@ import {
   DataTableValueArray,
 } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { formatDate } from "../../util/dateHelpers/dateHelpers";
 import useGrantedPackages, { GrantedPackage } from "./useGrantedPackages";
 
 const PackageRetrieval: React.FC = () => {
@@ -38,19 +37,11 @@ const PackageRetrieval: React.FC = () => {
         expandedRows={expandedRows}
         onRowToggle={(e) => setExpandedRows(e.data)}
       >
-        <Column field="package_name" header="Name" sortable></Column>
-        <Column field="size" header="Size" sortable></Column>
-        <Column field="version" header="Version"></Column>
+        <Column field="name" header="Name" sortable></Column>
         <Column
           field="public"
           header="Accessibility"
           body={(row: GrantedPackage) => (row.public ? "Public" : "Private")}
-          sortable
-        ></Column>
-        <Column
-          field="created_at"
-          header="Upload Date"
-          body={(row: GrantedPackage) => formatDate(row.created_at)}
           sortable
         ></Column>
         <Column field="description" header="Description"></Column>
@@ -59,18 +50,16 @@ const PackageRetrieval: React.FC = () => {
             <OverlayTrigger
               placement="right"
               overlay={
-                <Tooltip>
-                  {copied === row.package_name ? "Copied!" : "Copy"}
-                </Tooltip>
+                <Tooltip>{copied === row.name ? "Copied!" : "Copy"}</Tooltip>
               }
             >
               <Button
-                onClick={() => handleCopy(row.package_name)}
+                onClick={() => handleCopy(row.name)}
                 variant="secondary"
                 className="ml-2"
                 style={{ width: "75px" }}
               >
-                {copied === row.package_name ? "Copied!" : "Copy"}
+                {copied === row.name ? "Copied!" : "Copy"}
               </Button>
             </OverlayTrigger>
           )}

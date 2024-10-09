@@ -1,16 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiMutation, apiQuery } from "../../api/apiQueries";
 import useAuth from "../../auth/useAuth";
+import { PackageInfo } from "../package";
 
-export type UploadedPackage = {
-  package_id: string;
-  package_name: string;
-  description: string;
-  version: string;
-  size: number;
-  public: boolean;
-  created_at: string;
-  shared_users?: { user_id: string; username: string }[];
+export type UploadedPackage = PackageInfo & {
+  shared_users?: { id: string; email: string }[];
 };
 
 export default function useUploadedPackages() {
@@ -18,11 +12,8 @@ export default function useUploadedPackages() {
   const { user } = useAuth();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["uploaded-packages", user?.email],
-    queryFn: () =>
-      apiQuery<UploadedPackage[]>(
-        `/uploaded_packages_list/${user?.email}`, // TODO: This shouldn't be necessary, the API should identify the user from the token
-      ),
+    queryKey: ["owned-packages", user?.email],
+    queryFn: () => apiQuery<UploadedPackage[]>("/me/owned-packages"),
   });
 
   const accessMutation = useMutation({
@@ -45,7 +36,7 @@ export default function useUploadedPackages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["uploaded-packages", user?.email],
+        queryKey: ["owned-packages", user?.email],
       });
     },
   });
