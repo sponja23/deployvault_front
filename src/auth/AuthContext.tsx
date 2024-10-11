@@ -1,7 +1,6 @@
-import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
+import { ReactNode, createContext, useMemo } from "react";
 import { apiMutation, apiQuery } from "../api/apiQueries";
-import Cookies from "js-cookie";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type User = {
   email: string;
@@ -14,8 +13,8 @@ type Credentials = {
 
 export type UserContextType = {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  login: (credentials: Credentials) => Promise<void>;
+  logout: () => Promise<void>;
   register: (
     username: string,
     email: string,
@@ -27,15 +26,23 @@ export type UserContextType = {
 const AuthContext = createContext<UserContextType>({
   user: null,
   login: async () => {},
-  logout: () => {},
+  logout: async () => {},
   register: async () => {},
   isAuthenticated: false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { data, isLoading, error } = useQuery({
+  const queryClient = useQueryClient();
+
+  const {
+    data,
+    isLoading,
+    error,
+    refetch: refetchUser,
+  } = useQuery({
     queryKey: ["me"],
     queryFn: () => apiQuery<User>("/me/"),
+    retry: false,
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 
@@ -51,20 +58,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return data ?? null;
   }, [data, isLoading, error]);
 
-  // TODO: Remove this 
-  const login = async (email: string, password: string) => {};
+  // TODO: Remove this
+  const login = async ({ email, password }: Credentials) => {
+    // Call the login endpoint
+    await apiMutation("/auth/login", { email, password });
 
-  const logout = () => {};
+    // TODO: Error handling
 
-  const register = async (
-    username: string,
-    email: string,
-    password: string,
-  ) => {};
+    // Fetch the user again
+    await queryClient.invalidateQueries({
+      queryKey: ["me"],
+    });
+
+    await refetchUser();
+  };
+
+  const logout = async () => {
+    if (!user) {
+      return;
+    }
+
+    // Call the logout endpoint
+    await apiMutation("/auth/logout", {});
+
+    // Fetch the user again
+    await queryClient.invalidateQueries({
+      queryKey: ["me"],
+    });
+
+    await refetchUser();
+  };
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, register, isAuthenticated: !!user }}
+      value={{
+        user,
+        login,
+        logout,
+        register: async () => {
+          console.log("Register not implemented");
+        },
+        isAuthenticated: !!user,
+      }}
     >
       {children}
     </AuthContext.Provider>
