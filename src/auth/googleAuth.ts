@@ -8,5 +8,5 @@ export function googleLogin(backUrl: string) {
   const nonce = newNonceEntry({ backUrl });
 
   // Redirect to Google login
-  window.location.href = `${BASE_PATH}/auth/google?nonce=${nonce}`;
+  window.location.href = `${BASE_PATH}/auth/google/login?nonce=${nonce}`;
 }

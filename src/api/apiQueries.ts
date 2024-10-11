@@ -20,10 +20,8 @@ export type QueryResult<T> =
 export const BASE_PATH = "http://localhost:8000";
 
 export async function apiQuery<T>(path: string) {
-  const token = Cookies.get("authToken");
-
   const response = await fetch(`${BASE_PATH}${path}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
   });
 
   if (response.status === 401) throw new Error("Unauthorized");

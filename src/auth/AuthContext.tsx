@@ -1,7 +1,7 @@
-import { ReactNode, createContext, useState } from "react";
-import { apiMutation } from "../api/apiQueries";
+import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
+import { apiMutation, apiQuery } from "../api/apiQueries";
 import Cookies from "js-cookie";
-import { newNonceEntry } from "./nonceMap";
+import { useQuery } from "@tanstack/react-query";
 
 export type User = {
   email: string;
@@ -33,42 +33,34 @@ const AuthContext = createContext<UserContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => apiQuery<User>("/me/"),
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
 
-  const setToken = (token: string) => {
-    Cookies.set("authToken", token, { expires: 1 });
-  };
+  const user = useMemo(() => {
+    if (error) {
+      console.log("Error fetching user", error);
+      return null;
+    }
 
-  const login = async (email: string, password: string) => {
-    const response = await apiMutation<
-      Credentials,
-      User & { access_token: string }
-    >("/auth/login", {
-      email: email,
-      password: password,
-    });
+    if (isLoading) {
+      return null;
+    }
+    return data ?? null;
+  }, [data, isLoading, error]);
 
-    setUser({
-      email, // TODO: Change this to response.email once the API is updated
-    });
-    setToken(response.access_token);
-  };
+  // TODO: Remove this 
+  const login = async (email: string, password: string) => {};
 
-  const logout = () => {
-    Cookies.remove("authToken");
-    setUser(null);
-  };
+  const logout = () => {};
 
   const register = async (
     username: string,
     email: string,
     password: string,
-  ) => {
-    await apiMutation<Credentials, never>("/auth/signup", {
-      email: email,
-      password: password,
-    });
-  };
+  ) => {};
 
   return (
     <AuthContext.Provider
