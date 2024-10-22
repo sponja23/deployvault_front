@@ -7,11 +7,11 @@ export const RequireAuth = () => {
 
   // TODO: Loading for authentication? Maybe not necessary
   // if (loading) {
-  //     return <CaosSpinner />;
+  //     return <LoadingSpinner />;
   // }
   return isAuthenticated ? (
     <Outlet />
   ) : (
-    <Navigate to="/auth" state={{ from: location }} replace />
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 };

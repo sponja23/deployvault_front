@@ -1,146 +1,107 @@
-import React from "react";
-import deployVault_logo from "../../assets/logo_deployvault_inverted.png";
-import { Link } from "react-router-dom";
-import { Divider } from "primereact/divider";
-import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
-import { useAuthForm } from "./useAuthForm";
+import { FormEventHandler, ReactNode } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
-import { Container, Form, Card, Image } from "react-bootstrap";
-import { FormikProvider, Field, ErrorMessage } from "formik";
+import { Link } from "react-router-dom";
 
-export const AuthForm = () => {
-  const { formik, pathname } = useAuthForm();
+function ChangeAuthMethodMessage({
+  authMethod,
+}: {
+  authMethod: "login" | "register";
+}) {
+  return (
+    <div className="text-center">
+      <div className="text-center mt-3">
+        <p className="flex gap-2 justify-center">
+          {authMethod === "login" ? "New to CaOS?" : "Already have an account?"}
+          <Link
+            to={authMethod === "login" ? "/register" : "/login"}
+            className="text-accent"
+          >
+            {authMethod === "login" ? "Create an account" : "Log in"}
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Divider() {
+  return (
+    <div className="flex gap-3 items-center px-2">
+      <div className="border-b border-b-caos-gray-200 flex-grow" />
+      <span className="text-lg font-medium">or</span>
+      <div className="border-b border-b-caos-gray-200 flex-grow" />
+    </div>
+  );
+}
+
+function OAuthSection({ authMethod }: { authMethod: "login" | "register" }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <button className="w-full bg-zinc-100 text-black hover:bg-zinc-300 active:bg-zinc-400">
+        <FaGoogle />
+        {authMethod === "login" ? "Sign in" : "Register"} with Google
+      </button>
+      <button className="w-full bg-black hover:bg-zinc-900 active:bg-zinc-800">
+        <FaGithub />
+        {authMethod === "login" ? "Sign in" : "Register"} with GitHub
+      </button>
+    </div>
+  );
+}
+
+export function Input({
+  type = "text",
+  name,
+  placeholder,
+  autoComplete,
+}: {
+  type?: string;
+  name: string;
+  placeholder: string;
+  autoComplete: string;
+}) {
+  return (
+    <div className="form-group mb-3">
+      <input
+        className="bg-transparent border"
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
+      />
+    </div>
+  );
+}
+
+export function AuthForm({
+  handleSubmit,
+  title,
+  authMethod,
+  children,
+}: {
+  handleSubmit: FormEventHandler<HTMLFormElement>;
+  title: string;
+  authMethod: "login" | "register";
+  children: ReactNode;
+}) {
+  const showOAuth = true;
 
   return (
-    <Container className="d-flex flex-column justify-content-center align-items-center px-4">
-      <Link to="/">
-        <Image
-          src={deployVault_logo}
-          alt="CaOS Logo"
-          className="mb-4"
-          style={{ maxWidth: "500px" }}
-        />
-      </Link>
-      <Card
-        className="p-4"
-        style={{
-          width: "400px",
-          minHeight: "400px",
-          overflow: "hidden",
-        }}
-      >
-        <Card.Body>
-          <h1 className="text-center mb-4">
-            {pathname === "/auth" ? "Sign in" : "Register"}
-          </h1>
-          <FormikProvider value={formik}>
-            <Form className="w-100" onSubmit={formik.handleSubmit}>
-              {pathname === "/register" && (
-                <Container className="form-group mb-3">
-                  <Field
-                    name="username"
-                    className={`form-control ${
-                      formik.errors.username && formik.touched.username
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    placeholder="Username"
-                    autoComplete="username" // Agrega este atributo
-                  />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </Container>
-              )}
-              <Container className="form-group mb-3">
-                <Field
-                  name="email"
-                  className={`form-control ${
-                    formik.errors.email && formik.touched.email
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  placeholder="Email"
-                  autoComplete="email" // Agrega este atributo
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </Container>
-              <Container className="form-group mb-3">
-                <Field
-                  name="password"
-                  type="password"
-                  className={`form-control ${
-                    formik.errors.password && formik.touched.password
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  placeholder="Password"
-                  autoComplete="current-password" // Agrega este atributo
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </Container>
-              <CaOSButton
-                label={pathname === "/auth" ? "Sign in" : "Register"}
-                buttonType="submit"
-                variant="outline-dark"
-                className="w-100 mb-2 d-flex align-items-center justify-content-center"
-                disabled={formik.isSubmitting}
-              />
-            </Form>
-            <Divider>or</Divider>
-            <CaOSButton
-              label={
-                <>
-                  <FaGoogle className="me-2" />{" "}
-                  {pathname === "/auth"
-                    ? "Sign in with Google"
-                    : "Register in with Google"}
-                </>
-              }
-              type="secondary"
-              variant="outline-dark"
-              className="w-100 mb-2 d-flex align-items-center justify-content-center"
-            />
-
-            <CaOSButton
-              type="secondary"
-              label={
-                <>
-                  <FaGithub className="me-2" />{" "}
-                  {pathname === "/auth"
-                    ? "Sign in with GitHub"
-                    : "Register in with GitHub"}
-                </>
-              }
-              variant="outline-dark"
-              className="w-100 d-flex align-items-center justify-content-center"
-            />
-          </FormikProvider>
-        </Card.Body>
-        <Card.Footer className="text-center">
-          <Container className="text-center">
-            {pathname === "/auth" ? (
-              <p className="mb-0">
-                New to CaOS? <Link to="/register">Create an account</Link>
-              </p>
-            ) : pathname === "/register" ? (
-              <p className="mb-0">
-                Already have an account? <Link to="/auth">Sign in</Link>
-              </p>
-            ) : null}
-          </Container>
-        </Card.Footer>
-      </Card>
-    </Container>
+    <div className="p-10 w-[400px] gap-3 flex flex-col bg-primary text-white">
+      <h2>{title}</h2>
+      <form className="w-full" onSubmit={handleSubmit}>
+        {children}
+        <button type="submit" className="w-full dark-accent-button">
+          {title}
+        </button>
+      </form>
+      {showOAuth && (
+        <>
+          <Divider />
+          <OAuthSection authMethod={authMethod} />
+          <ChangeAuthMethodMessage authMethod={authMethod} />
+        </>
+      )}
+    </div>
   );
-};
+}

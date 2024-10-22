@@ -1,17 +1,186 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --font-base: "DM Sans", sans-serif;
 
-  --primary-color: #0F0F44;
+  --primary-color: #0f0f44;
   --secondary-color: #368600;
   --black-color: #030303;
-  --lightGray-color: #e4e4e4;
-  --gray-color: #005068;
   --violet-color: #814191;
   --white-color: #ffffff;
 }
 
-body {
+@layer base {
+  * {
+    @apply font-rubik;
+  }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
+  }
+
+  h5 {
+    @apply text-lg;
+  }
+
+  h6 {
+    @apply text-base;
+  }
+
+  section {
+    @apply px-14 py-20;
+  }
+
+  button {
+    @apply bg-primary-300 text-white 
+            flex items-center justify-center gap-2
+            px-4 py-2
+            transition-all duration-150 ease-in-out;
+
+    &:hover {
+      @apply bg-primary;
+    }
+
+    &:active {
+      @apply bg-primary-500;
+    }
+
+    &:disabled {
+      @apply bg-caos-gray-200 text-caos-gray-400 cursor-not-allowed;
+    }
+
+    &.accent-button {
+      @apply bg-accent;
+
+      &:hover {
+        @apply bg-accent-hover;
+      }
+
+      &:active {
+        @apply bg-accent-active;
+      }
+
+      &:disabled {
+        @apply bg-zinc-400 text-accent-500 cursor-not-allowed;
+      }
+    }
+
+    &.dark-accent-button {
+      @apply bg-accent-500;
+
+      &:hover {
+        @apply bg-accent-600;
+      }
+
+      &:active {
+        @apply bg-accent-700;
+      }
+
+      &:disabled {
+        @apply bg-zinc-400 text-accent-500 cursor-not-allowed;
+      }
+    }
+
+    &.border-button {
+      @apply bg-transparent border border-white;
+
+      &:hover {
+        @apply bg-accent/30;
+      }
+
+      &:active {
+        @apply bg-accent/40;
+      }
+
+      &:disabled {
+        @apply bg-white/20 cursor-not-allowed;
+      }
+    }
+  }
+
+  input,
+  textarea {
+    @apply w-full px-4 py-2 border border-caos-gray-200 rounded-none outline-none;
+
+    &::placeholder {
+      @apply text-caos-gray-400;
+    }
+
+    &:focus {
+      @apply border-primary-400;
+    }
+  }
+}
+
+@layer components {
+  .invalid-feedback {
+    @apply text-red-500 text-sm;
+  }
+
+  .loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 1s linear infinite;
+  }
+
+  .loader::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 5px solid white;
+    animation: prixClipFix 2s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes prixClipFix {
+    0% {
+      clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+    }
+    25% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+    }
+    50% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+    }
+    75% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    }
+    100% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+    }
+  }
 }
