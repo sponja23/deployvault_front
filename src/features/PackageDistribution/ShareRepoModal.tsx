@@ -62,7 +62,7 @@ function SharedUsers({
   sharedUsers,
   onRevoke,
 }: {
-  sharedUsers: { username: string; user_id: string }[];
+  sharedUsers: { email: string; id: string }[];
   onRevoke: (username: string) => void;
 }) {
   return (
@@ -76,9 +76,9 @@ function SharedUsers({
       {sharedUsers.length > 0 && (
         <ul>
           {sharedUsers.map((user) => (
-            <li className="px-3 py-2 flex justify-between" key={user.user_id}>
-              <span>{user.username}</span>
-              <button onClick={() => onRevoke(user.username)}>
+            <li className="px-3 py-2 flex justify-between" key={user.id}>
+              <span>{user.email}</span>
+              <button onClick={() => onRevoke(user.email)}>
                 Revoke access
               </button>
             </li>

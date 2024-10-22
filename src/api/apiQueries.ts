@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export type QueryResult<T> =
   | {
       data: T;
@@ -17,13 +15,11 @@ export type QueryResult<T> =
       isError: true;
     };
 
-const BASE_PATH = "http://localhost:8000";
+export const BASE_PATH = "http://localhost:8000";
 
 export async function apiQuery<T>(path: string) {
-  const token = Cookies.get("authToken");
-
   const response = await fetch(`${BASE_PATH}${path}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
   });
 
   if (response.status === 401) throw new Error("Unauthorized");
@@ -36,18 +32,18 @@ export async function apiQuery<T>(path: string) {
 }
 
 export async function apiMutation<U, T>(path: string, body: U) {
-  const token = Cookies.get("authToken");
-
   const response = await fetch(`${BASE_PATH}${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
+    credentials: "include",
     body: JSON.stringify(body),
   });
 
   if (response.status === 401) throw new Error("Unauthorized");
+
+  if (response.status === 204) return;
 
   const data = await response.json();
 

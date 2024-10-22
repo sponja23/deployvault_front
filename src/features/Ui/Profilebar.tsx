@@ -11,7 +11,7 @@ export const Profilebar = () => {
   const { user, logout } = useAuth();
 
   const handleLogout = async () => {
-    logout();
+    await logout();
     navigate("/");
   };
 

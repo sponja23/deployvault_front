@@ -1,6 +1,7 @@
 import { Home } from "./views/Home/Home";
 import { Layout } from "./views/Layout";
 import { Profile } from "./views/Profile/Profile";
+import { AuthCallback } from "./auth/AuthCallback";
 import Login from "./features/Authentication/Login";
 import { RequireAuth } from "./features/Authentication/RequireAuth";
 import { ToastContainer } from "react-toastify";
@@ -16,6 +17,7 @@ export default function App() {
     <>
       <Router>
         <Routes>
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Layout />}>

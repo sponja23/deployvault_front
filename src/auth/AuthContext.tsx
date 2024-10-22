@@ -1,27 +1,20 @@
-import { ReactNode, createContext, useState } from "react";
-import { apiMutation } from "../api/apiQueries";
-import Cookies from "js-cookie";
+import { ReactNode, createContext, useMemo } from "react";
+import { apiMutation, apiQuery } from "../api/apiQueries";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type User = {
   email: string;
-  username: string;
 };
 
-type LoginCredentials = {
-  email: string;
-  password: string;
-};
-
-type RegisterCredentials = {
-  username: string;
+type Credentials = {
   email: string;
   password: string;
 };
 
 export type UserContextType = {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  login: (credentials: Credentials) => Promise<void>;
+  logout: () => Promise<void>;
   register: (
     username: string,
     email: string,
@@ -33,54 +26,80 @@ export type UserContextType = {
 const AuthContext = createContext<UserContextType>({
   user: null,
   login: async () => {},
-  logout: () => {},
+  logout: async () => {},
   register: async () => {},
   isAuthenticated: false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const queryClient = useQueryClient();
 
-  const setToken = (token: string) => {
-    Cookies.set("authToken", token, { expires: 1 });
-  };
+  const {
+    data,
+    isLoading,
+    error,
+    refetch: refetchUser,
+  } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => apiQuery<User>("/me/"),
+    retry: false,
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
 
-  const login = async (email: string, password: string) => {
-    const response = await apiMutation<
-      LoginCredentials,
-      User & { access_token: string }
-    >("/login", {
-      email: email,
-      password: password,
+  const user = useMemo(() => {
+    if (error) {
+      console.log("Error fetching user", error);
+      return null;
+    }
+
+    if (isLoading) {
+      return null;
+    }
+    return data ?? null;
+  }, [data, isLoading, error]);
+
+  // TODO: Remove this
+  const login = async ({ email, password }: Credentials) => {
+    // Call the login endpoint
+    await apiMutation("/auth/login", { email, password });
+
+    // TODO: Error handling
+
+    // Fetch the user again
+    await queryClient.invalidateQueries({
+      queryKey: ["me"],
     });
 
-    setUser({
-      email, // TODO: Change this to response.email once the API is updated
-      username: response.username,
-    });
-    setToken(response.access_token);
+    await refetchUser();
   };
 
-  const logout = () => {
-    Cookies.remove("authToken");
-    setUser(null);
-  };
+  const logout = async () => {
+    if (!user) {
+      return;
+    }
 
-  const register = async (
-    username: string,
-    email: string,
-    password: string,
-  ) => {
-    await apiMutation<RegisterCredentials, never>("/signup", {
-      username: username,
-      email: email,
-      password: password,
+    // Call the logout endpoint
+    await apiMutation("/auth/logout", {});
+
+    // Fetch the user again
+    await queryClient.invalidateQueries({
+      queryKey: ["me"],
     });
+
+    await refetchUser();
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, register, isAuthenticated: !!user }}
+      value={{
+        user,
+        login,
+        logout,
+        register: async () => {
+          console.log("Register not implemented");
+        },
+        isAuthenticated: !!user,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -17,7 +17,7 @@ export default function Login() {
 
     // TODO: Add validation here
 
-    await login(email, password);
+    await login({ email, password });
 
     navigate("/home");
   };
