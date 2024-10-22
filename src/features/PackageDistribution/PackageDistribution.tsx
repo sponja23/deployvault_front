@@ -1,24 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ShareRepoModal from "./ShareRepoModal";
-import { Column } from "primereact/column";
-import {
-  DataTable,
-  DataTableExpandedRows,
-  DataTableValueArray,
-} from "primereact/datatable";
-import { CaOSButton } from "../../components/CaOSButton/CaOSButton";
-import { CaosSpinner } from "../../components/CaOSSpinner/CaosSpinner";
+import { formatDate } from "../../util/dateHelpers/dateHelpers";
+import LoadingSpinner from "../Ui/LoadingSpinner";
 import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
+import { Table } from "./Table";
 
-/**
- * Represents the package distribution component.
- * @returns The package distribution component.
- */
-const PackageDistribution: React.FC = () => {
-  const [expandedRows, setExpandedRows] = useState<
-    DataTableExpandedRows | DataTableValueArray | undefined
-  >(undefined);
-
+export default function PackageDistribution() {
   const { grantAccess, revokeAccess, packages, isLoading } =
     useUploadedPackages();
 
@@ -29,92 +16,92 @@ const PackageDistribution: React.FC = () => {
   const handleShare = (nameToShare: string) => {
     console.log(`Sharing with user: ${nameToShare}`);
     try {
-      grantAccess(selectedPackage!.name, nameToShare);
-      setShowShare(false);
+      grantAccess(selectedPackage!.package_name, nameToShare);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
   };
 
-  const handleRemoveAccess = (package_name: string, nameToShare: string) => {
-    console.log(`Removing access for user: ${nameToShare}`);
+  const handleRevoke = (nameToRevoke: string) => {
+    console.log(`Removing access for user: ${nameToRevoke}`);
     try {
-      revokeAccess(package_name, nameToShare);
+      revokeAccess(selectedPackage!.package_name, nameToRevoke);
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.error(`Error: ${error}`);
     }
   };
 
-  const rowExpansionTemplate = (data: UploadedPackage) => {
-    return (
-      <div className="p-3">
-        <DataTable value={data.shared_users}>
-          <Column field="username" header="User Name" sortable></Column>
-          <Column
-            body={(user: { user_id: string; username: string }) => (
-              <CaOSButton
-                label={`Remove permissions`}
-                onClick={() =>
-                  handleRemoveAccess(data.name, user.username)
-                } // Accessing the username property
-              />
-            )}
-          ></Column>
-        </DataTable>
-      </div>
-    );
-  };
+  const columns = [
+    {
+      title: "Name",
+      sort: (a: UploadedPackage, b: UploadedPackage) =>
+        a.package_name.localeCompare(b.package_name),
+    },
+    { title: "Description" },
+    {
+      title: "Upload Date",
+      sort: (a: UploadedPackage, b: UploadedPackage) =>
+        new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf(),
+    },
+    {
+      title: "Size",
+      sort: (a: UploadedPackage, b: UploadedPackage) => a.size - b.size,
+    },
+    { title: "Version" },
+    { title: "Accessibility" },
+    { title: "" },
+  ];
+
+  const rowGenerator = (item: UploadedPackage) => (
+    <tr
+      key={item.package_id}
+      className="h-16 even:bg-primary-evens odd:bg-primary-odds"
+    >
+      <td className="px-5 py-3">{item.package_name}</td>
+      <td className="px-5 py-3 max-w-[550px]">
+        <div className="line-clamp-2">{item.description}</div>
+      </td>
+      <td className="px-5 py-3">{formatDate(item.created_at)}</td>
+      <td className="px-5 py-3">{item.size}</td>
+      <td className="px-5 py-3">v{item.version}</td>
+      <td className="px-5 py-3">{item.public ? "Public" : "Private"}</td>
+      <td className="px-5 py-3">
+        <button
+          className="accent-button"
+          onClick={() => {
+            setSelectedPackage(item);
+            setShowShare(true);
+          }}
+        >
+          Manage
+        </button>
+      </td>
+    </tr>
+  );
 
   return isLoading ? (
-    <CaosSpinner />
+    <div className="w-full flex flex-col gap-4 justify-center items-center p-20">
+      <LoadingSpinner />
+    </div>
   ) : (
-    <div className="card">
-      <DataTable
-        loading={isLoading}
-        value={packages}
-        paginator
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        emptyMessage="No packages found."
-        expandedRows={expandedRows}
-        onRowToggle={(e) => setExpandedRows(e.data)}
-        rowExpansionTemplate={rowExpansionTemplate}
-      >
-        <Column
-          expander={(rowData: UploadedPackage) =>
-            rowData.shared_users !== undefined &&
-            rowData.shared_users.filter((user) => user?.id).length > 0
-          }
-          style={{ width: "5rem" }}
-        />
-        <Column field="name" header="Name" sortable></Column>
-        <Column
-          field="public"
-          header="Accessibility"
-          body={(row: UploadedPackage) => (row.public ? "Private" : "Private")}
-          sortable
-        ></Column>
-        <Column field="description" header="Description"></Column>
-        <Column
-          body={(pkg: UploadedPackage) => (
-            <CaOSButton
-              label="Share"
-              onClick={() => {
-                setSelectedPackage(pkg);
-                setShowShare(true);
-              }}
-            />
-          )}
-        ></Column>
-      </DataTable>
+    <div className="w-full h-full flex justify-center px-20 py-20">
+      {!packages || packages.length === 0 ? (
+        <div className="text-center">
+          <h1 className="text-2xl font-medium">No packages uploaded yet</h1>
+          <p className="text-lg font-light">
+            Upload a package to start sharing it
+          </p>
+        </div>
+      ) : (
+        <Table columns={columns} rows={packages} rowGenerator={rowGenerator} />
+      )}
       <ShareRepoModal
         show={showShare}
-        onHide={() => setShowShare(false)}
+        onClose={() => setShowShare(false)}
         onShare={handleShare}
+        onRevoke={handleRevoke}
         selectedPackage={selectedPackage}
       />
     </div>
   );
-};
-
-export default PackageDistribution;
+}

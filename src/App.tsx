@@ -1,29 +1,25 @@
-import "./App.css";
 import { Home } from "./views/Home/Home";
 import { Layout } from "./views/Layout";
-import { Landing } from "./views/Landing/Landing";
 import { Profile } from "./views/Profile/Profile";
 import { AuthCallback } from "./auth/AuthCallback";
-import { AuthForm } from "./features/Authentication/AuthForm";
+import Login from "./features/Authentication/Login";
 import { RequireAuth } from "./features/Authentication/RequireAuth";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserSettings from "./features/UserSettings/UserSettings";
 import PackageRetrieval from "./features/PackageRetrieval/PackageRetrieval";
 import PackageDistribution from "./features/PackageDistribution/PackageDistribution";
+import Landing from "./views/Landing/Landing";
+import Register from "./features/Authentication/Register";
 
-/**
- * The main component of the application.
- * Renders the application layout and sets up the routing.
- */
-const App: React.FC = () => {
+export default function App() {
   return (
     <>
       <Router>
         <Routes>
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/auth" element={<AuthForm />} />
-          <Route path="/register" element={<AuthForm />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Landing />} />
             <Route element={<RequireAuth />}>
@@ -45,6 +41,4 @@ const App: React.FC = () => {
       <ToastContainer />
     </>
   );
-};
-
-export default App;
+}

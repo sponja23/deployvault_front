@@ -15,7 +15,16 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
+  * {
+    @apply font-rubik;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-bold;
   }
 
@@ -43,18 +52,22 @@
     @apply text-base;
   }
 
+  section {
+    @apply px-14 py-20;
+  }
+
   button {
-    @apply bg-primary text-white 
+    @apply bg-primary-300 text-white 
             flex items-center justify-center gap-2
-            px-4 py-2 rounded-md font-semibold 
-            transition-all duration-200 ease-in-out;
+            px-4 py-2
+            transition-all duration-150 ease-in-out;
 
     &:hover {
-      @apply bg-caos-gray-200 text-accent;
+      @apply bg-primary;
     }
 
     &:active {
-      @apply bg-caos-gray-300;
+      @apply bg-primary-500;
     }
 
     &:disabled {
@@ -62,19 +75,112 @@
     }
 
     &.accent-button {
-      @apply bg-accent text-white;
+      @apply bg-accent;
 
       &:hover {
-        @apply bg-accent-hover text-white;
+        @apply bg-accent-hover;
       }
 
       &:active {
-        @apply bg-accent-active text-white;
+        @apply bg-accent-active;
       }
 
       &:disabled {
-        @apply bg-accent-hover text-white cursor-not-allowed;
+        @apply bg-zinc-400 text-accent-500 cursor-not-allowed;
       }
+    }
+
+    &.dark-accent-button {
+      @apply bg-accent-500;
+
+      &:hover {
+        @apply bg-accent-600;
+      }
+
+      &:active {
+        @apply bg-accent-700;
+      }
+
+      &:disabled {
+        @apply bg-zinc-400 text-accent-500 cursor-not-allowed;
+      }
+    }
+
+    &.border-button {
+      @apply bg-transparent border border-white;
+
+      &:hover {
+        @apply bg-accent/30;
+      }
+
+      &:active {
+        @apply bg-accent/40;
+      }
+
+      &:disabled {
+        @apply bg-white/20 cursor-not-allowed;
+      }
+    }
+  }
+
+  input,
+  textarea {
+    @apply w-full px-4 py-2 border border-caos-gray-200 rounded-none outline-none;
+
+    &::placeholder {
+      @apply text-caos-gray-400;
+    }
+
+    &:focus {
+      @apply border-primary-400;
+    }
+  }
+}
+
+@layer components {
+  .invalid-feedback {
+    @apply text-red-500 text-sm;
+  }
+
+  .loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 1s linear infinite;
+  }
+
+  .loader::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 5px solid white;
+    animation: prixClipFix 2s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes prixClipFix {
+    0% {
+      clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+    }
+    25% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+    }
+    50% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+    }
+    75% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    }
+    100% {
+      clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
     }
   }
 }

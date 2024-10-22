@@ -1,4 +1,3 @@
-import { Image } from "react-bootstrap";
 import dvault_navbar from "../../assets/logo_deployvault.png";
 import { Profilebar } from "./Profilebar";
 import { Authbar } from "./Authbar";
@@ -15,9 +14,9 @@ function NavLink({ to, children }: { to: string; children: ReactNode }) {
     <Link
       to={to}
       className={twMerge(
-        "hover:text-white hover:bg-accent-hover px-3 py-2 rounded-md transition-all duration-150 ease-in-out",
+        "hover:text-white hover: px-3 py-2 transition-all duration-150 ease-in-out",
         isActive
-          ? "text-white bg-accent-hover"
+          ? "text-white underline underline-offset-8"
           : "text-caos-gray-200 bg-transparent",
       )}
     >
@@ -26,19 +25,19 @@ function NavLink({ to, children }: { to: string; children: ReactNode }) {
   );
 }
 
-export function NavBar() {
+export function Header() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between">
+    <header className="w-screen fixed top-0 bg-accent py-4 flex items-center px-10 justify-between h-[75px] z-30">
       <Link to="/">
-        <Image src={dvault_navbar} alt="Logo" className="h-6" />
+        <img src={dvault_navbar} alt="Logo" className="h-6" />
       </Link>
       <nav>
         {isAuthenticated ? (
           <ul className="flex gap-1 items-center text-caos-gray-200">
             <li>
-              <NavLink to="/home">Home</NavLink>
+              <NavLink to="/home">Dashboard</NavLink>
             </li>
             <li>
               <NavLink to="/packages-distribution">
