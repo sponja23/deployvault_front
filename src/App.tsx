@@ -11,6 +11,7 @@ import PackageRetrieval from "./features/PackageRetrieval/PackageRetrieval";
 import PackageDistribution from "./features/PackageDistribution/PackageDistribution";
 import Landing from "./views/Landing/Landing";
 import Register from "./features/Authentication/Register";
+import CliAuth from "./features/Authentication/CliAuth";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
                 element={<PackageDistribution />}
               />
               <Route path="/user-settings" element={<UserSettings />} />
+              <Route path="/cli-auth" element={<CliAuth />} />
             </Route>
           </Route>
         </Routes>
