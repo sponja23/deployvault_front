@@ -2,7 +2,6 @@ import { useState } from "react";
 import LoadingSpinner from "../Ui/LoadingSpinner";
 import useGrantedPackages, { GrantedPackage } from "./useGrantedPackages";
 import { Table } from "../PackageDistribution/Table";
-import { formatDate } from "../../util/dateHelpers/dateHelpers";
 
 export default function PackageRetrieval() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -19,44 +18,31 @@ export default function PackageRetrieval() {
     {
       title: "Name",
       sort: (a: GrantedPackage, b: GrantedPackage) =>
-        a.package_name.localeCompare(b.package_name),
+        a.name.localeCompare(b.name),
     },
     { title: "Description" },
-    {
-      title: "Upload Date",
-      sort: (a: GrantedPackage, b: GrantedPackage) =>
-        new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf(),
-    },
-    {
-      title: "Size",
-      sort: (a: GrantedPackage, b: GrantedPackage) => a.size - b.size,
-    },
-    { title: "Version" },
     { title: "Accessibility" },
     { title: "" },
   ];
 
   const rowGenerator = (item: GrantedPackage) => (
     <tr
-      key={item.package_id}
+      key={item.id}
       className="h-16 even:bg-primary-evens odd:bg-primary-odds"
     >
-      <td className="px-5 py-3">{item.package_name}</td>
+      <td className="px-5 py-3">{item.name}</td>
       <td className="px-5 py-3 max-w-[550px]">
         <div className="line-clamp-2">{item.description}</div>
       </td>
-      <td className="px-5 py-3">{formatDate(item.created_at)}</td>
-      <td className="px-5 py-3">{item.size}</td>
-      <td className="px-5 py-3">v{item.version}</td>
       <td className="px-5 py-3">{item.public ? "Public" : "Private"}</td>
       <td className="px-5 py-3">
         <button
           className="accent-button min-w-[100px]"
           onClick={() => {
-            handleCopy(item.package_name);
+            handleCopy(item.name);
           }}
         >
-          {copied === item.package_name ? "Copied!" : "Copy"}
+          {copied === item.name ? "Copied!" : "Copy"}
         </button>
       </td>
     </tr>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ShareRepoModal from "./ShareRepoModal";
-import { formatDate } from "../../util/dateHelpers/dateHelpers";
 import LoadingSpinner from "../Ui/LoadingSpinner";
 import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
 import { Table } from "./Table";
@@ -16,7 +15,7 @@ export default function PackageDistribution() {
   const handleShare = (nameToShare: string) => {
     console.log(`Sharing with user: ${nameToShare}`);
     try {
-      grantAccess(selectedPackage!.package_name, nameToShare);
+      grantAccess(selectedPackage!.name, nameToShare);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
@@ -25,7 +24,7 @@ export default function PackageDistribution() {
   const handleRevoke = (nameToRevoke: string) => {
     console.log(`Removing access for user: ${nameToRevoke}`);
     try {
-      revokeAccess(selectedPackage!.package_name, nameToRevoke);
+      revokeAccess(selectedPackage!.name, nameToRevoke);
     } catch (error) {
       console.error(`Error: ${error}`);
     }
@@ -35,35 +34,22 @@ export default function PackageDistribution() {
     {
       title: "Name",
       sort: (a: UploadedPackage, b: UploadedPackage) =>
-        a.package_name.localeCompare(b.package_name),
+        a.name.localeCompare(b.name),
     },
     { title: "Description" },
-    {
-      title: "Upload Date",
-      sort: (a: UploadedPackage, b: UploadedPackage) =>
-        new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf(),
-    },
-    {
-      title: "Size",
-      sort: (a: UploadedPackage, b: UploadedPackage) => a.size - b.size,
-    },
-    { title: "Version" },
     { title: "Accessibility" },
     { title: "" },
   ];
 
   const rowGenerator = (item: UploadedPackage) => (
     <tr
-      key={item.package_id}
+      key={item.id}
       className="h-16 even:bg-primary-evens odd:bg-primary-odds"
     >
-      <td className="px-5 py-3">{item.package_name}</td>
+      <td className="px-5 py-3">{item.name}</td>
       <td className="px-5 py-3 max-w-[550px]">
         <div className="line-clamp-2">{item.description}</div>
       </td>
-      <td className="px-5 py-3">{formatDate(item.created_at)}</td>
-      <td className="px-5 py-3">{item.size}</td>
-      <td className="px-5 py-3">v{item.version}</td>
       <td className="px-5 py-3">{item.public ? "Public" : "Private"}</td>
       <td className="px-5 py-3">
         <button
