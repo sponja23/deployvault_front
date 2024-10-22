@@ -1,14 +1,15 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
+import LoadingSpinner from "../Ui/LoadingSpinner";
 
 export const RequireAuth = () => {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // TODO: Loading for authentication? Maybe not necessary
-  // if (loading) {
-  //     return <LoadingSpinner />;
-  // }
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return isAuthenticated ? (
     <Outlet />
   ) : (

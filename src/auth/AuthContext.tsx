@@ -21,6 +21,7 @@ export type UserContextType = {
     password: string,
   ) => Promise<void>;
   isAuthenticated: boolean;
+  isLoading: boolean;
 };
 
 const AuthContext = createContext<UserContextType>({
@@ -29,6 +30,7 @@ const AuthContext = createContext<UserContextType>({
   logout: async () => {},
   register: async () => {},
   isAuthenticated: false,
+  isLoading: false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -98,6 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         register: async () => {
           console.log("Register not implemented");
         },
+        isLoading: isLoading,
         isAuthenticated: !!user,
       }}
     >
