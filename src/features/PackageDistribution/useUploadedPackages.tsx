@@ -4,7 +4,7 @@ import useAuth from "../../auth/useAuth";
 import { PackageInfo } from "../package";
 
 export type UploadedPackage = PackageInfo & {
-  shared_users?: { id: string; email: string }[];
+  package_accesses?: { id: string; email: string }[];
 };
 
 export default function useUploadedPackages() {
@@ -16,23 +16,28 @@ export default function useUploadedPackages() {
     queryFn: () => apiQuery<UploadedPackage[]>("/me/owned-packages"),
   });
 
-  const accessMutation = useMutation({
-    mutationFn: (body: {
-      package_name: string;
-      user_name: string;
-      action: "grant" | "revoke";
-    }) => {
-      return apiMutation<
-        {
-          package_name: string;
-          user_name: string;
-          grant_access: boolean;
-        },
-        { message: string }
-      >("/access_pkg_config", {
-        ...body,
-        grant_access: body.action === "grant",
+  const grantMutation = useMutation({
+    mutationFn: (body: { package_name: string; user_name: string }) => {
+      return apiMutation<null, { message: string }>(
+        `/packages/${body.package_name}/members/${body.user_name}?access_type=READ`,
+        null,
+        "PUT",
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["owned-packages", user?.email],
       });
+    },
+  });
+
+  const revokeMutation = useMutation({
+    mutationFn: (body: { package_name: string; user_name: string }) => {
+      return apiMutation<null, { message: string }>(
+        `/packages/${body.package_name}/members/${body.user_name}?access_type=READ`,
+        null,
+        "DELETE",
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -42,18 +47,20 @@ export default function useUploadedPackages() {
   });
 
   const grantAccess = (package_name: string, user_name: string) => {
-    accessMutation.mutate({
+    grantMutation.reset();
+
+    grantMutation.mutate({
       package_name,
       user_name,
-      action: "grant",
     });
   };
 
   const revokeAccess = (package_name: string, user_name: string) => {
-    accessMutation.mutate({
+    revokeMutation.reset();
+
+    revokeMutation.mutate({
       package_name,
       user_name,
-      action: "revoke",
     });
   };
 
@@ -63,5 +70,13 @@ export default function useUploadedPackages() {
     error,
     grantAccess,
     revokeAccess,
+    grantPending: grantMutation.isPending,
+    grantError: grantMutation.error,
+    grantSuccess: grantMutation.isSuccess,
+    grantReset: grantMutation.reset,
+    revokePending: revokeMutation.isPending,
+    revokeError: revokeMutation.error,
+    revokeSuccess: revokeMutation.isSuccess,
+    revokeReset: revokeMutation.reset,
   };
 }

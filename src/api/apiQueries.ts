@@ -31,9 +31,9 @@ export async function apiQuery<T>(path: string) {
   return data as T;
 }
 
-export async function apiMutation<U, T>(path: string, body: U) {
+export async function apiMutation<U, T>(path: string, body: U, method="POST") {
   const response = await fetch(`${BASE_PATH}${path}`, {
-    method: "POST",
+    method,
     headers: {
       "Content-Type": "application/json",
     },

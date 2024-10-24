@@ -5,30 +5,11 @@ import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
 import { Table } from "./Table";
 
 export default function PackageDistribution() {
-  const { grantAccess, revokeAccess, packages, isLoading } =
-    useUploadedPackages();
+  const { packages, isLoading } = useUploadedPackages();
 
   const [showShare, setShowShare] = useState(false);
   const [selectedPackage, setSelectedPackage] =
     useState<UploadedPackage | null>(null);
-
-  const handleShare = (nameToShare: string) => {
-    console.log(`Sharing with user: ${nameToShare}`);
-    try {
-      grantAccess(selectedPackage!.name, nameToShare);
-    } catch (error) {
-      console.log(`Error: ${error}`);
-    }
-  };
-
-  const handleRevoke = (nameToRevoke: string) => {
-    console.log(`Removing access for user: ${nameToRevoke}`);
-    try {
-      revokeAccess(selectedPackage!.name, nameToRevoke);
-    } catch (error) {
-      console.error(`Error: ${error}`);
-    }
-  };
 
   const columns = [
     {
@@ -84,8 +65,6 @@ export default function PackageDistribution() {
       <ShareRepoModal
         show={showShare}
         onClose={() => setShowShare(false)}
-        onShare={handleShare}
-        onRevoke={handleRevoke}
         selectedPackage={selectedPackage}
       />
     </div>

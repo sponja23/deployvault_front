@@ -9,7 +9,7 @@ export default function PackageRetrieval() {
   const { packages, isLoading } = useGrantedPackages();
 
   const handleCopy = (repo: string) => {
-    navigator.clipboard.writeText(`pip install ${repo}`);
+    navigator.clipboard.writeText(`dv install ${repo}`);
     setCopied(repo);
     setTimeout(() => setCopied(null), 1500); // Reset after 1.5 seconds
   };

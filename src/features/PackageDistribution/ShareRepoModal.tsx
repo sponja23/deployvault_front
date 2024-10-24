@@ -1,28 +1,45 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Modal from "../Ui/Modal";
-import { UploadedPackage } from "./useUploadedPackages";
+import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
 import { FaSearch } from "react-icons/fa";
+import useAuth from "../../auth/useAuth";
+import { twMerge } from "tailwind-merge";
 
 type ShareRepoModalProps = {
   show: boolean;
   onClose: () => void;
-  onShare: (username: string) => void;
-  onRevoke: (username: string) => void;
   selectedPackage: UploadedPackage | null;
 };
 
-function ModalHeader() {
+function ModalHeader({ packageName }: { packageName: string }) {
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="font-semibold text-3xl">Share your package</h2>
+      <h2 className="font-semibold text-3xl">
+        Manage{" "}
+        <b className="bg-accent px-3 py-1 font-bold ml-2 text-xl">
+          {packageName}
+        </b>
+      </h2>
       <p className="font-thin text-lg">
-        Give access to one of your team members or revoke their access.
+        Grant or revoke access to this package
       </p>
     </div>
   );
 }
 
-function InviteForm({ onShare }: { onShare: (username: string) => void }) {
+function InviteForm({
+  onShare,
+  pending,
+  error,
+  success,
+  reset,
+}: {
+  onShare: (username: string) => void;
+  pending: boolean;
+  error: Error | null;
+  success: boolean;
+  reset: () => void;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -33,12 +50,23 @@ function InviteForm({ onShare }: { onShare: (username: string) => void }) {
     }
   };
 
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        reset();
+      }, 1000);
+    }
+  }, [success, reset]);
+
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       <label htmlFor="search-input">Grant access to new users</label>
       <div className="flex gap-3">
         <div
-          className="flex border border-white bg-transparent rounded-none px-4 py-3 cursor-text flex-grow items-center gap-3"
+          className={twMerge(
+            "flex border border-white bg-transparent rounded-none px-4 py-3 cursor-text flex-grow items-center gap-3",
+            error ? "border-red-500 border" : "",
+          )}
           onClick={() => inputRef.current?.focus()}
         >
           <FaSearch size={20} />
@@ -48,12 +76,21 @@ function InviteForm({ onShare }: { onShare: (username: string) => void }) {
             placeholder="Search users"
             className="text-lg bg-transparent border-none p-0 flex-grow"
             ref={inputRef}
+            onAbort={reset}
           />
         </div>
-        <button type="submit" className="accent-button w-[150px]">
-          Grant access
+
+        <button
+          type="submit"
+          className="accent-button w-[150px]"
+          disabled={pending}
+        >
+          {pending ? "Granting..." : success ? "Granted!" : "Grant access"}
         </button>
       </div>
+      <p className="text-red-500 text-sm h-[20px]">
+        {error && <>An error occurred, make sure the user exists</>}
+      </p>
     </form>
   );
 }
@@ -61,10 +98,30 @@ function InviteForm({ onShare }: { onShare: (username: string) => void }) {
 function SharedUsers({
   sharedUsers,
   onRevoke,
+  pending,
+  error,
+  success,
+  reset,
 }: {
   sharedUsers: { email: string; id: string }[];
   onRevoke: (username: string) => void;
+  pending: boolean;
+  error: Error | null;
+  success: boolean;
+  reset: () => void;
 }) {
+  const [userToRevoke, setUserToRevoke] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        reset();
+      }, 1000);
+
+      setUserToRevoke(null);
+    }
+  }, [success, reset]);
+
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-base font-normal">Users with access</h3>
@@ -76,11 +133,27 @@ function SharedUsers({
       {sharedUsers.length > 0 && (
         <ul>
           {sharedUsers.map((user) => (
-            <li className="px-3 py-2 flex justify-between" key={user.id}>
-              <span>{user.email}</span>
-              <button onClick={() => onRevoke(user.email)}>
-                Revoke access
-              </button>
+            <li className="flex flex-col px-3 py-2" key={user.id}>
+              <div className="flex justify-between">
+                <span className="flex items-center">{user.email}</span>
+                <button
+                  onClick={() => {
+                    setUserToRevoke(user.id);
+                    onRevoke(user.email);
+                  }}
+                >
+                  {pending && userToRevoke === user.id
+                    ? "Revoking..."
+                    : success && userToRevoke === user.id
+                      ? "Revoked!"
+                      : "Revoke access"}
+                </button>
+              </div>
+              {error && userToRevoke === user.id && (
+                <p className="text-red-500 text-sm h-[20px]">
+                  An error occurred, please try again
+                </p>
+              )}
             </li>
           ))}
         </ul>
@@ -92,11 +165,31 @@ function SharedUsers({
 export default function ShareRepoModal({
   show,
   onClose,
-  onShare,
-  onRevoke,
   selectedPackage,
 }: ShareRepoModalProps) {
+  const { user } = useAuth();
+  const {
+    grantAccess,
+    revokeAccess,
+    grantPending,
+    grantError,
+    grantSuccess,
+    grantReset,
+    revokePending,
+    revokeError,
+    revokeSuccess,
+    revokeReset,
+  } = useUploadedPackages();
+
   if (!selectedPackage) return null;
+
+  const onShare = (username: string) => {
+    grantAccess(selectedPackage.name, username);
+  };
+
+  const onRevoke = (username: string) => {
+    revokeAccess(selectedPackage.name, username);
+  };
 
   return (
     <Modal
@@ -106,11 +199,23 @@ export default function ShareRepoModal({
     >
       <div className="text-white">
         <div className="flex flex-col gap-10">
-          <ModalHeader />
-          <InviteForm onShare={onShare} />
+          <ModalHeader packageName={selectedPackage.name} />
+          <InviteForm
+            onShare={onShare}
+            pending={grantPending}
+            error={grantError}
+            success={grantSuccess}
+            reset={grantReset}
+          />
           <SharedUsers
-            sharedUsers={selectedPackage.shared_users!}
+            sharedUsers={selectedPackage.package_accesses!.filter(
+              (a) => a.email !== user?.email,
+            )}
             onRevoke={onRevoke}
+            pending={revokePending}
+            error={revokeError}
+            success={revokeSuccess}
+            reset={revokeReset}
           />
         </div>
       </div>
