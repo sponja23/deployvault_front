@@ -22,7 +22,37 @@ export async function apiQuery<T>(path: string) {
     credentials: "include",
   });
 
-  if (response.status === 401) throw new Error("Unauthorized");
+  // TODO: Refactor this to a separate and reusable function
+  if (response.status === 401) {
+    // We now have to try to refresh the token
+    // If it fails, we'll throw an error
+
+    const refreshResponse = await fetch(`${BASE_PATH}/auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (refreshResponse.status === 401) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!refreshResponse.ok) {
+      throw new Error("Failed to refresh token");
+    }
+
+    // Retry the original request
+    const retryResponse = await fetch(`${BASE_PATH}${path}`, {
+      credentials: "include",
+    });
+
+    if (!retryResponse.ok) {
+      throw new Error("Failed to retry request after refreshing token");
+    }
+
+    const data = await retryResponse.json();
+
+    return data as T;
+  }
 
   const data = await response.json();
 
@@ -31,7 +61,11 @@ export async function apiQuery<T>(path: string) {
   return data as T;
 }
 
-export async function apiMutation<U, T>(path: string, body: U, method="POST") {
+export async function apiMutation<U, T>(
+  path: string,
+  body: U,
+  method = "POST",
+) {
   const response = await fetch(`${BASE_PATH}${path}`, {
     method,
     headers: {
@@ -41,7 +75,42 @@ export async function apiMutation<U, T>(path: string, body: U, method="POST") {
     body: JSON.stringify(body),
   });
 
-  if (response.status === 401) throw new Error("Unauthorized");
+  // TODO: Refactor this to a separate and reusable function
+  if (response.status === 401) {
+    // We now have to try to refresh the token
+    // If it fails, we'll throw an error
+
+    const refreshResponse = await fetch(`${BASE_PATH}/auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (refreshResponse.status === 401) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!refreshResponse.ok) {
+      throw new Error("Failed to refresh token");
+    }
+
+    // Retry the original request
+    const retryResponse = await fetch(`${BASE_PATH}${path}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+
+    if (!retryResponse.ok) {
+      throw new Error("Failed to retry request after refreshing token");
+    }
+
+    const data = await retryResponse.json();
+
+    return data as T;
+  }
 
   if (response.status === 204) return;
 

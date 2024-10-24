@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShareRepoModal from "./ShareRepoModal";
 import LoadingSpinner from "../Ui/LoadingSpinner";
 import useUploadedPackages, { UploadedPackage } from "./useUploadedPackages";
@@ -21,6 +21,14 @@ export default function PackageDistribution() {
     { title: "Accessibility" },
     { title: "" },
   ];
+
+  useEffect(() => {
+    if (selectedPackage && packages) {
+      setSelectedPackage(
+        packages!.find((p) => p.id === selectedPackage.id) || null,
+      );
+    }
+  }, [packages]);
 
   const rowGenerator = (item: UploadedPackage) => (
     <tr
