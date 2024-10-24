@@ -18,10 +18,10 @@ export default function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/" element={<Layout />}>
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route index element={<Landing />} />
             <Route element={<RequireAuth />}>
               <Route path="/home" element={<Home />} />
