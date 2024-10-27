@@ -22,12 +22,14 @@ export default function PackageDistribution() {
     { title: "" },
   ];
 
+  // TODO: Remove this useEffect
   useEffect(() => {
     if (selectedPackage && packages) {
       setSelectedPackage(
         packages!.find((p) => p.id === selectedPackage.id) || null,
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [packages]);
 
   const rowGenerator = (item: UploadedPackage) => (
