@@ -15,7 +15,7 @@ export type QueryResult<T> =
       isError: true;
     };
 
-export const BASE_PATH = "http://localhost:8000";
+export const BASE_PATH = import.meta.env.VITE_API_URL;
 
 export async function apiQuery<T>(path: string) {
   const response = await fetch(`${BASE_PATH}${path}`, {

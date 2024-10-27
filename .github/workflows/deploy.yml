@@ -2,7 +2,10 @@ name: Deploy to Cloudflare Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
+
+env:
+  VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
 jobs:
   deploy:
@@ -13,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: lts
+          node-version: 18
       - name: Install dependencies
         run: npm ci
       - name: Build

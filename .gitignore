@@ -28,3 +28,6 @@ updates
 *.sw?
 
 .vercel
+
+# Build env vars
+.env
