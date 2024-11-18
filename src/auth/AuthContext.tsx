@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     refetch: refetchUser,
   } = useQuery({
     queryKey: ["me"],
-    queryFn: () => apiQuery<User>("/me/"),
+    queryFn: () => apiQuery<User>("/me"),
     retry: false,
     staleTime: 1000 * 60 * 60, // 1 hour
   });
